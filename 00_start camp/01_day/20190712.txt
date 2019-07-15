@@ -1,0 +1,42 @@
+1. 강사님 Slack 주소
+2. bash에 master
+3. bash후 명령어 . code 뭐?
+
+set(집합 연산자)
+-합집합/교집합/차집합
+
+
+
+bot name : gieun / gieun_bot
+
+715820888:AAHBIsmJi0ZNtRIq5ZHRnFswj8wpfbP3zMU
+
+
+GET 방식 : URL이 모두 보임
+POST 방식 : 암호와 같이 안보이게
+
+https://api.telegram.org/bot<token>/METHOD_NAME
+https://api.telegram.org/bot715820888:AAHBIsmJi0ZNtRIq5ZHRnFswj8wpfbP3zMU/getMe
+
+bot_chat_id : 715820888
+chat_id : 806514960
+
+
+https://api.telegram.org/bot715820888:AAHBIsmJi0ZNtRIq5ZHRnFswj8wpfbP3zMU/sendMessage?chat_id=806514960&text=안녕하세요
+
+pip install python-decouple -> id나 토큰 등을 가려주는 프로그램 설치 명령어
+
+
+webhook : 중간매개체 역할
+
+ngrok : 포트를 개방, 방화벽을 뚫고 다른 곳에 연결
+
+webhook 등록 주소
+https://api.telegram.org/bot<token>/setWebhook?url=<ngrok-forwarding-http-url>/<token>
+https://api.telegram.org/bot715820888:AAHBIsmJi0ZNtRIq5ZHRnFswj8wpfbP3zMU/setWebhook?url=https://edugieun.pythonanywhere.com/715820888:AAHBIsmJi0ZNtRIq5ZHRnFswj8wpfbP3zMU
+
+네이버 개발자
+ID: xZ8GSUc3lAtAs0tI_YrM
+Secret: h9W8ljzTY4
+
+배포(deploy) - pythonanywhere
