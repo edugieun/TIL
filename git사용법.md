@@ -1,8 +1,18 @@
-## 다른 컴퓨터에서 연결할 때
+## 다른 컴퓨터에서 처음 연결할 때
+
+- ##### 윈도우 검색 <자격>-<windows자격증명>-git관련된거 다 지우기
+
+- init 되어있는 거 다 지우기 명령어 (master 써있는거 지울때) rm -rf .git
+
+- git config --global user.name <유저네임>
+
+- git config --global user.email <githubemail>
+
+- 잘 됐나 확인 git config --list
 
 ```bash
 git clone <주소>
-git push gitlab master ? 
+git push -u gitlab master ? 
 ```
 
 
