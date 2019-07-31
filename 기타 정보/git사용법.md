@@ -17,6 +17,8 @@ git push -u gitlab master ?
 
 - 이름 바꾸고 싶을 땐 git remote rename 현재이름 바꿀이름
 
+- ## 집가서 clone받고 나서 꼭 .gitignore 파일 만들어야함.
+
 
 
 ## 한 폴더를 여러 웹(github, gitlab)에 동시 연결할 때
