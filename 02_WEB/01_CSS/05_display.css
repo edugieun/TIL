@@ -12,12 +12,12 @@ div {
   margin-left: auto;
 }
 
-/* 오른쪽 정렬 */
+/* 왼쪽 정렬 */
 .mr-auto {
   margin-right: auto;
 }
 
-/* 오른쪽 정렬 */
+/* 중앙 정렬 */
 .mx-auto {
   margin: 0 auto;
 }
