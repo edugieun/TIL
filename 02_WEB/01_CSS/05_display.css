@@ -1,0 +1,23 @@
+div {
+  width: 100px;
+  height: 100px;
+  background-color: crimson;
+  color: white;
+  line-height: 100px;
+  text-align: center;
+}
+
+/* 오른쪽 정렬 */
+.ml-auto {
+  margin-left: auto;
+}
+
+/* 왼쪽 정렬 */
+.mr-auto {
+  margin-right: auto;
+}
+
+/* 중앙 정렬 */
+.mx-auto {
+  margin: 0 auto;
+}
