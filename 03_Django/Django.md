@@ -103,6 +103,7 @@
 
 1. view: 만들고자 하는 view 함수 작성
 2. url: views에서 만든 함수에 주소를 연결
+   - `url.py` 파일에서 먼저 `*from 앱이름 import views` 를 선언하여 앱 안에 views파일을 읽겠다고 선언해야 함.
 3. temlplates: 해당 view 함수가 호출 될 때. 보여질 페이지
 
 ### DTL

@@ -56,3 +56,9 @@ body {
   top: 60px;
   left: 60px;
 }
+
+
+.follow {
+  position: absolute;
+  bottom: 100px;
+}
