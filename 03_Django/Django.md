@@ -15,7 +15,7 @@
 
 - 대부분 MVC(Model View Controller) (Controller가 중간 관리자)인데, Django는 MTV(Model Template View) (View가 중간관리자) / Modle = 데이터 관리 / Template = 사용자가 보는 화면 / View = 중간 관리자
 
-## 실습
+## 강의
 
 ### 가상환경 설정
 
@@ -68,7 +68,7 @@
 
 - vscode 터미널에서 장고 설치 `pip install django` 후 버전 확인 `python -m django --version`
 
-### 명령어
+### 프로젝트 생성 및 작성
 
 - 프로젝트 생성: `django-admin startproject django_intro .` 마침표(.)을 붙이지 않으면 django_intro폴더안에 또 django_intro가 있어서 번거롭게 2번 들어가야됨.
 - 서버 켜기: `python manage.py runserver` 터미널 번호가 1번이어야 에러 안뜰거임.
@@ -99,15 +99,55 @@
 
   - 한글화: `LANGUAGE_CODE = 'en-us'`  를 `LANGUAGE_CODE = 'ko-kr'`로 바꾸고 시간도 `TIME_ZONE = 'Asia/Seoul'` 로 바꿔
 
-코드 작성 순서
-
-1. view: 만들고자 하는 view 함수 작성
-2. url: views에서 만든 함수에 주소를 연결
-   - `url.py` 파일에서 먼저 `*from 앱이름 import views` 를 선언하여 앱 안에 views파일을 읽겠다고 선언해야 함.
-3. temlplates: 해당 view 함수가 호출 될 때. 보여질 페이지
-
-### DTL
-
-- Django Template Language
-- django template에서 사용하는 내장 template system
+- **코드 작성 순서**
+  
+  - view: 만들고자 하는 view 함수 작성
+  - url: views에서 만든 함수에 주소를 연결
+    - `url.py` 파일에서 먼저 `*from 앱이름 import views` 를 선언하여 앱 안에 views파일을 읽겠다고 선언해야 함.
+- temlplates: 해당 view 함수가 호출 될 때. 보여질 페이지
+  
+- **DTL**
+  
+  - Django Template Language
+  - django template에서 사용하는 내장 template system
 - 조건, 반복, 변수 치환, 필터 등 많은 기능을 제공한다.
+  
+- **CSRF 사이트 간 요청 위조**
+  
+- 관련 00_django_intro > user_new, user_create, settings.py
+  
+- 웹 어플리케이션 취약점 중 하나로 사용자가 자신의 의도와 무관하게 공격자가 의도한 행동을 해서 특정 웹페이지의 보안을 무력화 시키거나, 수정, 삭제 등의 강제적인 작업을 하게하는 공격 방법.
+  
+- django는 최소한의 안전장치를 위해 자신이 부여한 랜덤 hash값을 token으로 부여한다. 이 token 값이 없는 요청은 잘못된 요청이라고 판단하여 접근을 거부한다.(403 error)
+  
+    - ```python
+      <form action="/user_create/" method="POST">
+        {% csrf_token %} <!-- POST 방식은 항상 csrf_token을 붙여줄 것-->
+      ```
+
+------
+
+### 정적파일(static)
+
+- image / css / js 파일과 같이 해당 내용이 고정되어 응답을 할 때 별도의 처리 없이 그대로 보여주면 되는 파일들
+
+### URL 로직 분리
+
+### Django namespace
+
+- templates / static 분리
+
+### 상속
+
+
+
+------
+
+190816 수업 정리
+
+1. Form(GET/POST)
+2. POST - csrf_token
+3. static(load, {% static %})
+4. URL 로직(프로젝트 & 앱)
+5. Namespace(template, static)
+6. 상속(Block)

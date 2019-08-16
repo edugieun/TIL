@@ -1,0 +1,11 @@
+
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>ASCII ART에 오신걸 환영합니다. ^___________^</h1>
+
+{{ response }} <!--이건 안돼고-->
+
+<pre>{{ response }}</pre> <!-- 이렇게 해야 문자 그대로 보여줌 -->
+
+{% endblock %}

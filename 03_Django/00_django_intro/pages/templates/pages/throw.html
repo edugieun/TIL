@@ -1,0 +1,11 @@
+
+
+{% extends 'base.html' %}
+{% block content %}
+<form action="/pages/catch/" method="GET"> <!-- form의 method default는 GET. 슬래쉬'/'는 get방식의 경우 뒷부분은 안써도 되지만, post방식은 안쓰면 에러. 그냥 쓰는걸로 통일 -->
+  <label for="message">THROW</label>
+  <input type="text" id="message" name="message">
+  <input type="submit"> <!-- type submit은 내용은 form 의 action으로 보냄-->
+</form>
+
+{% endblock %}
