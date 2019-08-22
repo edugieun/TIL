@@ -205,7 +205,7 @@ pip install -r requirements.txt
 - 모델은 부가적인 메타데이터를 가진 **DB의 구조(layout)를 의미**
 - 사용자가 저장하는 데이터들의 **필수적인 필드와 동작(behavior)을 포함**
 
-### Field
+#### Field
 
 https://docs.djangoproject.com/en/2.2/ref/models/fields/#charfield
 
@@ -229,33 +229,49 @@ model 로직
 - 모든 필드는 **기본적으로 NOT NULL 조건**이 붙는다.(NULL 값이 들어갈 수 없다.)
 - 각각의 **클래스 변수**들은 **모델의 데이터베이스 필드**를 나타낸다.
 
-Migrations
+### Migrations
 
 1. migrations
 
    - ```bash
      $ python manage.py makemigrations
      ```
-
-   - 모델(model.py)을 작성/변경한 사항을 django 에게 알리는 작업.  (ORM에 보낼 python 코드 설계도를 작성)
+     
+   - ```bash
+      #해당 migrations 설계도가 SQL 문으로 어떻게 해석되어서 동작할지 미리 볼 수 있다.
+      $ python manage.py sqlmigrate app_name 0001
+      
+      # migrations 설계도가 migrate 됐는지 안됐는지 확인
+      $ python manage.py showmigrati
+      
+      
+      ```
+      
+   - ons모델(model.py)을 작성/변경한 사항을 django 에게 알리는 작업.  (ORM에 보낼 python 코드 설계도를 작성)
+   
    - 테이블에 대한 설계도(django ORM이 만들어 줌)를 생성.
+
 
 2. migrate
 
    - migrations로 만든 설계도를 기반으로 실제 DB 테이블을 만듦. ( `db.sqlite3`)
+   
    - 모델에서의 변경사항들과 DB 스키마가 동기화를 이룬다.
+   
+   - ```bash
+     $ python manage.py migrate
+     ```
 
-추가사항
+- SQL 들어가기
 
-```BASH
-# 해당 migrations 설계도가 SQL 문으로 어떻게 해석되어서 동작할지 미리 볼 수 있다.
-$ python manage.py sqlmigrate app_name 0001
-
-# migrations 설계도가 migrate 됐는지 안됐는지 확인
-$ python manage.py showmigrations
-```
-
-
+  - ```bash	
+    $ sqlite3 db.sqlite3
+    
+    # 테이블 확인
+    >>> .tables
+    # 나가기
+    >>> .exit
+    ```
 
 history
 
@@ -469,7 +485,7 @@ QuerySet 기본 개념
 
 ------
 
-DELETE
+#### DELETE
 
 ```python
 # article 인스턴스 객체를 생성 후, .delete() 메서드를 호출
