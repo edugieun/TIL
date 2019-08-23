@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 clasee="text-center">New page</h1>
+<h1 class="text-center">New page</h1>
 <form action="/articles/create/" method="POST"> <!-- POST를 쓰는 이유-->
 {% csrf_token %} <!--POST 방식은 csrf 토큰 값을 같이 보내야함-->
 <label for="title">TITLE</label><br>
