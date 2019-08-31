@@ -7,6 +7,5 @@ class Student(models.Model):
     birthday = models.DateField()
     age = models.IntegerField()
 
-    # 객체표현
     def __str__(self):
-        return self.title
+        return self.name
