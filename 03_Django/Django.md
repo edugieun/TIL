@@ -75,7 +75,7 @@
 
 - 앱 만들기: `python manage.py startapp pages` 여기서 앱 이름을 pages로 정했는데, 통상적으로 앱 이름은 복수형으로 만듬.
 
-- 앱 등록: settings.py 에서 `pages.apps.PagesConfig`를 추가.
+- 앱 등록: settings.py 에서 `pages.apps.PagesConfig`를 추가 및 한글화
 
   - ```python
     # Application definition
@@ -95,8 +95,12 @@
         'django.contrib.messages',
         'django.contrib.staticfiles',
     ]
+    ...
+  LANGUAGE_CODE = 'ko-kr'
+    
+    TIME_ZONE = 'Asia/Seoul'
     ```
-
+    
   - 한글화: `LANGUAGE_CODE = 'en-us'`  를 `LANGUAGE_CODE = 'ko-kr'`로 바꾸고 시간도 `TIME_ZONE = 'Asia/Seoul'` 로 바꿔
 
 - **코드 작성 순서**
@@ -242,7 +246,7 @@ model 로직
       $ python manage.py sqlmigrate app_name 0001
       
       # migrations 설계도가 migrate 됐는지 안됐는지 확인
-      $ python manage.py showmigrati
+      $ python manage.py showmigrations
       
       
       ```
@@ -530,3 +534,51 @@ pip install django-extensions
 
 - Django-extension은 커스텀 확장 tool이다.
 - Django app 구조로 되어 있기 때무넹 프로젝트에서 사용하기 위해서는 app등록 과정을 거쳐야 한다.
+
+## URL 분리
+
+- 프로젝트 URL 수정
+
+  - ```python
+    from django.contrib import admin
+    from django.urls import path, include
+    
+    urlpatterns = [
+        path('articles/', include('articles.urls')),
+        path('admin/', admin.site.urls),
+    ]
+    ```
+
+- 앱 urls.py 생성
+
+  - ```python
+    from django.urls import path
+    
+    urlpatterns = [
+        
+    ]
+    ```
+
+- 프로젝트에 templates폴더와 base.html 생성
+
+  - base.html에 부트스트랩 및 {% block %} 추가
+
+- 템플릿 경로 설정
+
+  - ```python
+    'DIRS': [os.path.join(BASE_DIR, 'crud', 'templates')],
+    ```
+
+- 앱 view.py 함수 추가
+
+  - ```python
+    from django.shortcuts import render
+    
+    # Create your views here.
+    def index(request):
+        return render(request, 'articles/index.html')
+    # articles/를 안 써줄 경우 namespace 문제 발생
+    # 앱이 2개일 경우 먼저 등록된 것만 읽힘. 따라서 명시 해줘야 함.
+    ```
+
+  - 

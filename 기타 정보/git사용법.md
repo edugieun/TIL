@@ -46,3 +46,286 @@ test -f ~/.profile && . ~/.profile
 test -f ~/.bashrc && . ~/.bashrc
 ```
 
+## Git Branch
+
+- 브랜치: 나뭇가지의 비육적 표현
+
+- Git 브랜치는 매우 가볍다.
+
+- 순식간에 브랜치를 만들고 브랜치 사이를 이동할 수 있다.
+
+- git이 가지고온 혁신 중 하나는 브랜치 기능을 매우 쓸만한 수준까지 만들었다는 것.
+
+- ```bash
+  # 파일 만들고 init 한 후 commit 까지 한 후
+  482  touch a.txt
+  483  touch b.txt
+  484  git init
+  487  git add .
+  488  git commit -m 'first commit'
+  # ssafy branch를 만든다.
+  491  git branch ssafy
+  492  git branch # branch 목록 보기 명령어
+  494  git checkout ssafy # ssafy 브랜치로 이동하기
+  495  touch c.txt # ssafy 브랜치에서 c.txt 파일을 만들고
+  496  git add . 
+  # commit을 한 순간부터 브랜치가 나뉘게 된다.
+  497  git commit -m 'make c.txt'
+  # master로 이동하면 c.txt 파일이 보이지않는다.
+  498  git checkout master
+  # ssafy에만 c.txt가 있다.
+  499  git checkout ssafy
+  
+  478  git checkout master
+  479  git branch -d ssafy
+  480  git brand -D ssafy
+  481  git branch
+  482  git branch -D ssafy
+  483  git branch
+  484  git checkout -b ssafy
+  485  git branch
+  486  git checkout master
+  487  git branch -D ssafy
+  488  git checkout -b feature/test
+  489  touch test.txt
+  490  git status
+  491  git add .
+  492  git commit -m 'complete test.txt'
+  493  git checkout master
+  494  git merge feature/test
+  495  git log
+  496  git branch
+  497  git branch -d feature/test
+  498  git log
+  499  git log --oneline
+  500  git checkout -b feature/signout
+  501  touch signout.txt
+  502  git status
+  503  git add.
+  504  git commit -m 'Comple signout.txt'
+  505  git status
+  506  git add .
+  507  git commit -m 'Comple signout.txt'
+  508  git checkout master
+  509  touch master.txt
+  510  git add .
+  511  git commit -m 'Make master.txt'
+  512  git checkout feature/signout
+  513  touch login.txt
+  514  git add .
+  515  git commit -m 'Complete login.txt'
+  516  git checkout master
+  517  history
+  518  git merge feature/signout
+  519  git log --oneline --graph
+  520  git branch
+  521  git branch -d feature/signout
+  522  git checkout -b feature/article
+  523  git status
+  524  git status
+  525  git add .
+  526  git commint -m 'fix a.txt'
+  527  git commit -m 'fix a.txt'
+  528  git checkout master
+  529  git status
+  530  git add .
+  531  git commit -m 'fix a.txt master'
+  532  git merge feature/article
+  533  git status
+  534  git add .
+  535  git commit
+  536  git log --online --graph
+  537  git log --oneline --graph
+  538  history
+  
+  ```
+
+## Merge
+
+1. Fast-forward
+
+   - feature/test branch 이동
+
+     - ```bash
+       $ git checkout -b feature/test
+       $ (feature/test)
+       ```
+
+   - 작업 완료 후 commit
+
+     - ```bash
+       touch test.md
+       git add .
+       git commit -m 'complete test.md'
+       ```
+
+   - master로 이동
+
+     - ```bash
+       git checkout master
+       $ (master)
+       ```
+
+   - master에 병합
+
+     - ```bash
+       git merge feature/test
+       ```
+
+   - 결과
+
+     - 단순히 HEAD가 최신 COMMIT으로 이동
+     - branch 생성 이후 master branch의 이력에 변화가 없었기 때문.
+
+   - branch 삭제
+
+     - ```bash
+       git branch -d feature/test
+       ```
+
+2. Merge-commit(3-way-merge)
+
+   - feature/login branch 이동
+
+     - ```bash
+       git checkout -b feature/login
+       ```
+
+   - 작업 완료 후 commit
+
+     - ```bash
+       touch login.md
+       git add .
+       git commint -m 'complete login.md'
+       ```
+
+   - master 이동
+
+     - ```bash
+       git checkout master
+       ```
+
+   - master에 추가 commit 생성
+
+     - ```bash
+       touch master.md
+       git add .
+       git commit -m 'fix master.md'
+       ```
+
+   - master에 병합
+
+     - ```bash
+       git merge feature/login
+       ```
+
+   - 자동으로 merge commit 발생
+
+     - ```bash
+       Merge branch 'feature/login'
+       # pleas enter a commit ...
+       ...
+       ```
+
+       - Vim 에디터로 열림.
+       - 메세지를 수정하고자 하면 `i`로 편집 모드로 바꾼다음에 commit을 수정하고 `esc` + `:wq`를 통해 저장 및 종료
+
+   - commit 그래프 확인하기
+
+     - ```bash
+       git log --oneline --graph
+       ```
+
+   - branch 삭제
+
+     - ```bash
+       git branch -d feature/login
+       ```
+
+3. Merge conflict
+
+   - feature/article branch 생성 및 이동
+
+     - ```bash
+       git checkout -b feature/article
+       ```
+
+   - 작업 완료 후 commit
+
+     - ```bash
+       # 충돌을 만들어 낼 파일에 코드를 작성
+       git add .
+       git commit -m 'fixed minor update'
+       ```
+
+   - master 로 이동
+
+     - ```bash
+       git checkout master
+       ```
+
+   - master에 추가 commit 만들기
+
+     - ```bash
+       # feature/article branch 에서 수정한 파일과 동일 파일의 같은 위치를 수정
+       git add .
+       git commit -m 'fixed master update'
+       ```
+
+   - master에 병합
+
+     - ```bash
+       git merge feature/article
+       ```
+
+   - merge conflit 발생
+
+     - ```bash
+       Auto-merging a.txt
+       CONFLICT ...
+       Automatic merge failied; fix conflicts and then commit result.
+       ```
+
+   - 충돌 확인 및 해결
+
+     - ```bash
+       # 충동이 일어난 파일 열기
+       <<<<<< HEAD
+       master 에서 작성한 내용
+       ========
+       feature/article 에서 작성한 내용
+       >>>>>> feature/article
+       
+       #원하는 코드로 수정
+       ```
+
+   - merge commit 진행
+
+     - ```bash
+       git add .
+       git commit
+       ```
+
+       - commit 메세지는 이미 앞에서 작성되어 있음.
+
+   - branch 삭제
+
+     - ```bash
+       git branch -d feature/article
+       ```
+
+## WorkFlow (협업)
+
+1. Feature branch workflow
+   - Pull request
+     - 기능 개발을 끝내고 master에 바로 병합시키는게 아니라, 브랜치를 중앙 원격 저장소에 올리고(push) master에 병합을 요청(merge)
+   - 주의사항
+     - 중앙에서 병합을 했다면, 다른 팀원들은 master 브랜치를 pull 받아야 한다.
+
+2. Forking workflow
+   - Branch가 master의 git address를 fork 함.
+   - 그럼 branch repo에도 같은 프로젝트가 생김. 그걸 clone해서 저장
+   - 저장한 clone 폴더에서 git remote add upstream [master repo 주소]로 master repo와 연결해
+   - 그런 후 git checkout -b feature/coding 해서 브랜치 한 후 파일 수정 후
+   - git push 하는데 이때 본인의 repo로 함. git push -u origin feature/coding
+   - 그러면 branch repo에 알림이 뜨고, 그 후에 master의 pull request에도 알림이 뜸
