@@ -48,6 +48,8 @@ test -f ~/.bashrc && . ~/.bashrc
 
 ## Git Branch
 
+`https://gmlwjd9405.github.io/2017/10/27/how-to-collaborate-on-GitHub-1.html`
+
 - 브랜치: 나뭇가지의 비육적 표현
 
 - Git 브랜치는 매우 가볍다.
