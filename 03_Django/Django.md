@@ -565,6 +565,8 @@ pip install django-extensions
 
 - 템플릿 경로 설정
 
+  - Django가 먼저 찾는 기본 templates 경로는 앱에 있는 경로 이기 때문에 프로젝트의 templates도 경로로 추가해준다.
+
   - ```python
     'DIRS': [os.path.join(BASE_DIR, 'crud', 'templates')],
     ```
@@ -747,9 +749,161 @@ pip install django-extensions
     - 3번은 count 메서드가 호출되면서 comment로 모델 쿼리를 한번 더 db에 보내기 때문에 매우 작은 차이지만 더 느리다.
 
   - 댓글이 없는 경우 대체 문장 출력
+  
+    ```html
+    {% empty %}
+    <p><b> 댓글이 없어요... </b></p>
+    {% endfor %}
+    ```
 
 ### ManyToManyField - M:N
 
 ### OneToOneField = 1:1
 
+------
 
+## STATIC / MEDIA
+
+### static
+
+- images 폴더 내부의 사진처럼 미리 준비된 자료나 파일
+
+- Django는 기본적으로 앱 내부의 static 폴더를 찾을 수 있음.
+
+- 따라서, 앱 외부의 파일을 가져오기 위해서는 아래와 같이 경로를 추가해줘야함.
+  ```python
+  # settings.py
+  # 이 경우는 프로젝트인 crud 안에 assets 폴더를 경로로 설정
+  STATICFILES_DIRS = [
+  os.path.join(BASE_DIR, 'crud', 'assets'),
+  ]
+  ```
+
+### Image upload
+
+- Pillow: image 필드를 사용할 때 필수로 필요한 패키지 `pip install Pillow`
+
+- 이미지를 저장할 새로운 필드가 필요함. models.py에서 이미 있는 필드에 추가로 필드를 작성할 때는 아래처럼 추가적인 속성이 필요하다.
+
+  ```python
+  # 나중에 추가된 필드의 경우 blank 속성이 필요함.
+  image = models.ImageField(blank=True)
+  ```
+
+- NULL
+
+  - 기본 값: False
+  - DB와 관련되어 있다.(databased-related)
+  - 주어진 컬럼이 NULL 값을 가질 것인지를 결정.
+
+- blank
+
+  - 기본 값: False
+  - 데이터 유효성과 관련되어 있다. (Validation-related)
+  - `full_clean()` / `is_valid()` 처럼 유효성 검사 메서드가 호출될 때, 유효성 검사에 사용된다.
+
+- `null=True, bland=False` 와 같이 두개를 동시에 사용하면?
+
+  - DB내에서는 해당 필드가 NULL을 사용하지만, 웹 사이트에서는 HTML INPUT 태그에 `required`속성이 필요하다는 것을 의미한다.
+
+  주의사항
+
+  - 문자열 기반 필드(charField, TextField ...) 에서는 null=True 금지.
+
+  - 이렇게 정의하게 되면 문자열 기반 필드는 `데이터 없음`에 대한 값이 2가지가 된다. None과 빈 문자열을 갖게 된다.
+
+  - 데이터 없음에 대한 조건이 2가지면 중복이기 때문에 문자열 기반 필드는 NULL이 아닌 빈문자열을 사용하는게 장고의 컨벤션이다.
+
+    ```python
+    class Person(models.Model):
+        name = models.TextField(blank=True) # name은 null=True 금지
+        birth = models.DataField(null=True, blank=True)
+        # birth는 문자열 기반 필드가 아닌 숫자 필드이기 때문에 가능.
+    ```
+
+- 이미지도 edit을 통해 새로운 이미지로 수정할 수는 있지만, text와는 다르게 수정할 때 이미지를 무조건 업로드 하지 않으면 에러가 발생한다.(글만 수정하는 건 안된다는 의미.)
+
+  - 이미지는 바이너리 데이터(하나의 덩어리)라서 텍스트처럼 일부만 수정하는게 불가능. 그렇기 때문에 html input태그에 value 속성으로 수정하는 방식이 아니고, 새로우 나진으로 덮어 씌우는 방법을 사용.
+  - `<input type="file">`가 `value=""`를 지원하지 않는다.
+  - 정말 글만 수정하고 싶다면 이전과 똑같은 이미지를 업로드하면 된다.
+
+- 문제: 이미지 필드 설정 이전에 작성했던 게시글의 detail 페이지가 동작하지 않는다.(article.image.url을 불러오지 못하기 때문)
+
+  - 해결방법1: static 파일로 이미지가 없을 때 대신 사용할 이미지를 미리 넣어둠.
+  - 해결방법2: 템플릿에서 {% if %} 문으로 article.image 가 존재하는 경우만 이미지를 출력하도록.
+
+- image resizing
+
+  - 설치 순서 중요
+    - Pillow
+    - pilkit : pillow를 쉽게 사용할 수 있게 해준다.
+    - django-imagekit : 이미지 helper를 제공하는 django app
+    - 설치 순서 중요!
+
+  1. html 태그로 직접 사이즈 조정
+
+     - 원본은 그대로 저장되어 있고 보여지는 사이즈만 조정하는 것이기 떄문에 근본적인 해결책이 아니다.
+
+  2. 업로드 할 때 이미지 자체를 resizing 해서 저장
+
+     2.1 원본 저장 X / 썸네일 크기 저장 O
+
+     2.2 원본 저장 O / 썸네일 크기 저장 O
+
+- 이미지 업로드 경로 커스텀
+  - `instance.pk`는 `처음(최초)` 레코드가 작성되는 순간에는 pk값이 없기 때문에 `media/articles/None/images`로 저장된다.
+    - 따라서, 실제 개발에선 로그인을 통해 유저 정보를 받고, `instance.user.pk`또는 `instance.user.username`처럼 업로드한 유저의 정보로 폴더를 구조화하는 경우가 많다.
+
+------
+
+## Django Form
+
+- 기존 html의 form을 좀 더 편하게 쓸 수 있음
+
+- `is_valid`
+
+  - Form 객체의 유효성 검사를 하는데 가장 중요한 역할.
+  - Form 객체가 생성되면, 유효성 검사를 하고 유효한지 아닌지 여부를 boolean으로 반환.
+
+- `cleaned_data`
+
+  - 유효성 검사 후 깔끔하고 정제된 dict 형태에서 데이터를 가져오는 방법
+  - `request.POST.get('title')` 은 이제 절대 추천하지 않는다.
+
+- Forms as HTML
+
+  - `as_p()`: 각 필드가 단락(paragragh)으로 렌더링
+  - `as_ul()`: 각 필드가 목록 항목(list item)으로 렌더링
+  - `as_table()`: 각 필드가 테이블 행으로 렌더링
+
+- widget
+
+  - django form을 사용하면 기본적으로 field에 맞는 default widget를 사용한다.
+  - 그런데 다른 widget을 사용하고 싶다면 `widget`인자를 통해 field를 새로 정의할 수 있다.
+
+- `get_object_or_404() / get_list_or_404()`
+
+  - 해당 객체가 있다면 `objects.get()`을 실행하고, 없으면 **ObjectDoesNotExist** 예외가 아닌 **Http404(HttpResponseNotFound)**를 raise 한다.
+
+  :grey_question: 왜 404 error가 나올 상황에 django는 500 error를 발생시켰을까?
+
+  - `.get()` 에서는 조건에 맞는 데이터가 없는 경우에 에러를 나타내게 설계되어있다. **코드 단계에서 발생한 에러**에 대해서는 브라우저는 500 Internal Server Error로 인식.
+  - 클라이언트 입장에서 `서버에 오류가 발생하여 요청을 수행할 수 없다.(500)`라는 원인이 정확하지 않은 에러를 발생시키기 때문에, **올바른 에러를 예외처리하고 발생 시키는 것 또한 개발에서 중요한 요소 중 하나**이다.
+
+- `initial`
+
+  - form이 나타날 때 해당 필드의 초기 값.
+  - HTML input 태그의 value 속성을 사용했던 것과 동일.
+  - 초기 값을 설정하는 인수는 딕셔너리 자료형이어야 한다.
+
+------
+
+## django ModelForm
+
+- 일반 form과 다르게 Model로부터 Form을 자동으로 생성하는 기능
+- form class 안에 Meta 클래스를 정의하고, Meta 클래스 안에 Model 속성에 해당하는 모델 클래스를 지정한다. 즉, 어떤 모델을 기반으로 form을 작성할 것인지를 지정하는 것이다.
+- 일반 Form에 비해 모델 정의를 다시 하지 않아서 쉽고 간결하게 작성 가능하다.
+- django가 해당 모델에서 양식에 필요한 대부분의 정보를 이미 정의하게 된다.
+- 어떤 모델의 레코드를 만들어야 할지 이미 알고 있으므로 유효성 검사 후 바로 저장 `save()`이 가능하다.
+- Form class를 반드시 forms.py에 작성할 필요는 없다.
+- 하지만 되도록 해당 app 폴더 안에 `forms.py`에 작성하는 것이 바람직하다.

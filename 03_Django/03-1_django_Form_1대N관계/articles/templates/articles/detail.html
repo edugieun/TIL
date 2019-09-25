@@ -1,0 +1,37 @@
+{% extends 'articles/base.html' %}
+
+{% block content %}
+<h1>DETAIL</h1>
+<hr>
+<p>{{ article.pk }}</p>
+<p>{{ article.title }}</p>
+<p>{{ article.content }}</p>
+<p>{{ article.created_at }}</p>
+<p>{{ article.updated_at|date:"M, j, Y" }}</p>
+<hr>
+<p><b>{{ comments|length }}개의 댓글</b></p>
+{% for comment in comments %}
+<li>
+{{ comment.content }}
+<form action="{% url 'articles:comments_delete' comment.pk article.pk %}" method="POST" style="display: inline;">
+{% csrf_token %}
+<input type="submit" value="co-delete">
+</form>
+</li>
+{% endfor %}
+
+<hr>
+<form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+{% csrf_token %}
+<label for="content">COMMENT</label>
+<input type="text" name="content" id="content">
+<input type="submit" valuse="submit">
+</form>
+
+<a href="{% url 'articles:index' %}">[back]</a>
+<a href="{% url 'articles:update' article.pk %}">[UPDATE]</a>
+<form action="{% url 'articles:delete' article.pk %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="DELETE">
+</form>
+{% endblock  %}
