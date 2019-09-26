@@ -31,4 +31,4 @@ class Comment(models.Model):
     # 객체 표현
     def __str__(self):
         # return self.content
-        return f'<Article({self.article_id}): Comment({self.pk})-{self.content}'
+        return self.content

@@ -9,5 +9,5 @@ urlpatterns = [
     path('<int:article_pk>/delete/', views.delete, name='delete'),
     path('<int:article_pk>/update/', views.update, name='update'),
     path('<int:article_pk>/comments/', views.comments_create, name='comments_create'), # DETAIL(GET) + CREATE(POST)
-    path('<int:comment_pk>/<int:article_pk>/delete/', views.comments_delete, name='comments_delete'),
+    path('<int:article_pk>/<int:comment_pk>/delete/', views.comments_delete, name='comments_delete'),
 ]
