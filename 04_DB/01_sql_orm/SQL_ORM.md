@@ -114,30 +114,32 @@ TIL
 
    ```python
    # orm
-   User.objects.all()
+   >>> User.objects.all()
    ```
 
       ```sql
    -- sql
-   SELECT * FROM users_user
+   sqlite> SELECT * FROM users_user
       ```
 
 2. user 레코드 생성
 
    ```python
    # orm
-   User.objects.create(first_name="김", last_name="기은")
-   django.db.utils.IntegrityError: NOT NULL constraint failed: users_user.age
+   >>> User.objects.create(first_name="김", last_name="기은")
    
+   django.db.utils.IntegrityError: NOT NULL constraint failed: users_user.age
+   ------------------------------------------
    >>> User.objects.create(first_name="김", last_name="기은", age=27, country="대전", phone="123-4567-8910", balance=100)
+   
    <User: 기은>
    ```
 
    ```sql
    -- sql
-   INSERT INTO users_user (first_name, last_name) VALUES ('김', '기은');
+   sqlite> INSERT INTO users_user (first_name, last_name) VALUES ('김', '기은');
    Error: NOT NULL constraint failed: users_user.age
-   
+   ------------------------------------------
    sqlite> INSERT INTO users_user (first_name, last_name, age, country, phone, balance) VALUES ('김', '기은', 27, '대전', '123-456-78910', 100);
    ```
 
@@ -149,10 +151,17 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.get(pk=101)
+   
+   <User: 기은>
    ```
 
    ```sql
    -- sql
+   sqlite> SELECT * FROM users_user
+      ...> WHERE id=101;
+      
+   101,"김","기은",27,"대전",123-4567-8910,100
    ```
 
 4. 해당 user 레코드 수정
@@ -162,10 +171,15 @@ TIL
 
    ```python
    # orm
+   >>> user.last_name = '김'
+   >>> user.save()
    ```
 
       ```sql
    -- sql
+   sqlite> UPDATE users_user
+      ...> SET first_name='철수'
+      ...> WHERE id=101;
       ```
 
 5. 해당 user 레코드 삭제
@@ -175,10 +189,14 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.get(pk=101).delete()
+(1, {'users.User': 1})
    ```
-
+   
    ```sql
    -- sql
+   sqlite> DELETE FROM users_user
+      ...> WHERE id=101;
    ```
 
 
@@ -195,10 +213,14 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.all().count()
+   100
    ```
 
    ```sql
    -- sql
+   sqlite> SELECT COUNT(*) FROM users_user;
+   100
    ```
 
 2. 나이가 30인 사람의 이름
@@ -208,10 +230,18 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.filter(age=30).values('first_name')
+   <QuerySet [{'first_name': '영환'},
+   {'first_name': '보람'}, {'first_name': '은영'}]>
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT first_name FROM users_user
+      ...> WHERE age=30;
+   "영환"
+   "보람"
+   "은영"
       ```
 
 3. 나이가 30살 이상인 사람의 인원 수
@@ -220,10 +250,15 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.filter(age__gte=30).count()
+   43
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT COUNT(*) FROM users_user
+      ...> WHERE age >= 30;
+   43
       ```
 
 4. 나이가 20살 이하인 사람의 인원 수 
