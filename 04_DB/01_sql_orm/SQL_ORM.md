@@ -126,23 +126,21 @@ TIL
 
    ```python
    # orm
-   >>> User.objects.create(first_name="김", last_name="기은")
+   >>> User.objects.create(first_name="기은", last_name="김")
    
    django.db.utils.IntegrityError: NOT NULL constraint failed: users_user.age
    ------------------------------------------
-   >>> User.objects.create(first_name="김", last_name="기은", age=27, country="대전", phone="123-4567-8910", balance=100)
-   
-   <User: 기은>
+   >>> User.objects.create(first_name="기은", last_name="김", age=27, country="대전", phone="123-4567-8910", balance=100)
    ```
-
+   
    ```sql
-   -- sql
-   sqlite> INSERT INTO users_user (first_name, last_name) VALUES ('김', '기은');
+-- sql
+   sqlite> INSERT INTO users_user (first_name, last_name) VALUES ('기은', '김');
    Error: NOT NULL constraint failed: users_user.age
    ------------------------------------------
-   sqlite> INSERT INTO users_user (first_name, last_name, age, country, phone, balance) VALUES ('김', '기은', 27, '대전', '123-456-78910', 100);
+   sqlite> INSERT INTO users_user (first_name, last_name, age, country, phone, balance) VALUES ('기은', '김', 27, '대전', '123-456-78910', 100);
    ```
-
+   
    * 하나의 레코드를 빼고 작성 후 `NOT NULL` constraint 오류를 orm과 sql에서 모두 확인 해보세요.
 
 3. 해당 user 레코드 조회
@@ -152,18 +150,14 @@ TIL
    ```python
    # orm
    >>> User.objects.get(pk=101)
-   
-   <User: 기은>
    ```
-
+   
    ```sql
-   -- sql
+-- sql
    sqlite> SELECT * FROM users_user
       ...> WHERE id=101;
-      
-   101,"김","기은",27,"대전",123-4567-8910,100
    ```
-
+   
 4. 해당 user 레코드 수정
 
    - ORM: `101` 번 글의 `last_name` 을 '김' 으로 수정
@@ -171,6 +165,7 @@ TIL
 
    ```python
    # orm
+   >>> user = User.objects.get(pk=101)
    >>> user.last_name = '김'
    >>> user.save()
    ```
@@ -233,6 +228,10 @@ TIL
    >>> User.objects.filter(age=30).values('first_name')
    <QuerySet [{'first_name': '영환'},
    {'first_name': '보람'}, {'first_name': '은영'}]>
+   
+   #query문 확인 방법
+   In [15]: print(User.objects.filter(age=30).values('first_name').query)
+   SELECT "users_user"."first_name" FROM "users_user" WHERE "users_user"."age"=30
    ```
 
       ```sql
@@ -265,30 +264,45 @@ TIL
 
    ```python
    # orm
+   >>> User.objects.filter(age__lte=20).count()
+   23
    ```
 
    ```sql
    -- sql
+   sqlite> SELECT COUNT(*) FROM users_user
+      ...> WHERE age <= 20;
+   23
    ```
 
 5. 나이가 30이면서 성이 김씨인 사람의 인원 수
 
    ```python
    # orm
+   >>> User.objects.filter(age=30, last_name='김').count()
+   1
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT COUNT(*) FROM users_user
+      ...> WHERE age=30 and last_name='김';
+   1
       ```
 
 6. 나이가 30이거나 성이 김씨인 사람?
 
    ```python
    # orm
+   In [14]: User.objects.filter(Q(age=30) | Q(last_name='김'))
+   In [31]: User.objects.filter(Q(age=30) | Q(last_name='김')).count() 
+   Out[14]: 25
    ```
 
    ```sql
    -- sql
+   sqlite> SELECT COUNT(*) FROM users_user WHERE age=30 or last_name='김';
+   25
    ```
 
 7. 지역번호가 02인 사람의 인원 수
@@ -297,20 +311,33 @@ TIL
 
    ```python
    # orm
+   In [26]: User.objects.filter(phone__startswith='02').count()
+   Out[26]: 24
    ```
 
       ```sql
    -- sql
+   SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
+   24
       ```
 
 8. 거주 지역이 강원도이면서 성이 황씨인 사람의 이름
 
    ```python
    # orm
+   In [33]: User.objects.filter(country='강원도', last_name='황').values('first_name')
+Out[33]: <QuerySet [{'first_name': '은정'}]>
+       
+   User.objects.filter(country='강원도', last_name='황').values('first_name')
+       ...: .first().get('first_name')
+           # 객체가 리스트로 묶일 경우 항상 인덱스(first())로 접근해야하 한다.
    ```
-
+   
       ```sql
    -- sql
+   sqlite> SELECT first_name FROM users_user
+      ...> WHERE country='강원도' and last_name='황';
+   은정
       ```
 
 
@@ -323,42 +350,55 @@ TIL
 
 1. 나이가 많은 사람순으로 10명
 
-      ```python
+   ```python
    # orm
+   In [38]: User.objects.order_by('-age')[:10].count()
+   Out[38]: 10
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT * FROM users_user
+      ...> ORDER BY age DESC LIMIT 10;
       ```
 
 2. 잔액이 적은 사람순으로 10명
 
-      ```python
+   ```python
    # orm
+   In [40]: User.objects.order_by('balance')[:10]
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT * FROM users_user
+      ...> ORDER BY balance LIMIT 10;
       ```
 
 3. 잔고는 오름차순, 나이는 내림차순으로 10명?
 
       ```python
    # orm
-   ```
-
+   In [41]: User.objects.order_by('balance', '-age')[:10]
+```
+   
    ```sql
    -- sql
+   sqlite> SELECT * FROM users_user
+    ...> ORDER BY balance, age DESC LIMIT 10;
    ```
    
 4. 성, 이름 내림차순 순으로 5번째 있는 사람
 
    ```python
    # orm
-   ```
-
+   In [41]: User.objects.order_by('-last_name', '-first_name')[4]
+```
+   
       ```sql
    -- sql
+   sqlite> SELECT * FROM users_user
+    ...> ORDER BY last_name DESC, first_name DESC LIMIT 1 OFFSET 4;
       ```
 
 
@@ -378,50 +418,75 @@ TIL
 
 1. 전체 평균 나이
 
-      ```python
+   ```python
    # orm
+   In [43]: User.objects.aggregate(Avg('age'))
+   Out[43]: {'age__avg': 28.217821782178216}
+   
+   # 변수명을 바꾸고 싶을 경우
+   In [44]: User.objects.aggregate(avg_value=Avg('age'))
+   Out[44]: {'avg_value': 28.217821782178216}
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT AVG(age) FROM users_user;
+   28.2178217821782
       ```
 
 2. 김씨의 평균 나이
 
-      ```python
+   ```python
    # orm
+   In [47]: User.objects.filter(last_name='김').aggregate(Avg('age'))
+   Out[47]: {'age__avg': 28.782608695652176}
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT AVG(age) FROM users_user WHERE last_name='김';
+   28.7826086956522
       ```
 
 3. 강원도에 사는 사람의 평균 계좌 잔고
 
    ```python
    # orm
+   In [47]: User.objects.filter(country='강원도').aggregate(Avg('balance'))
+   Out[48]: {'balance__avg': 157895.0}
    ```
 
    ```sql
    -- sql
+   sqlite> SELECT AVG(balance) FROM users_user
+      ...> WHERE country='강원도';
+   157895.0
    ```
 
 4. 계좌 잔액 중 가장 높은 값
 
    ```python
    # orm
+   In [47]: User.objects.aggregate(Max('balance'))
+   Out[49]: {'balance__max': 1000000}
    ```
 
       ```sql
    -- sql
+   sqlite> SELECT MAX(balance) FROM users_user;
+   1000000
       ```
 
 5. 계좌 잔액 총액
 
    ```python
    # orm
+   In [47]: User.objects.aggregate(Sum('balance'))
+Out[50]: {'balance__sum': 14425140}
    ```
-
+   
       ```sql
    -- sql
+   sqlite> SELECT SUM(balance) FROM users_user;
+   14425140
       ```
