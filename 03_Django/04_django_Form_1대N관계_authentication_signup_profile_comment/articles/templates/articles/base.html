@@ -1,5 +1,5 @@
 {% load bootstrap4 %}
-
+{% load gravatar %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,6 +13,7 @@
   <div class="container">
     {% if user.is_authenticated %} {# request.user.is_authenticated 가 원래 맞는데 user만 써도 django는 알아서 인식해줌 #}
       <h3> {# 인증 됐을 때 #}
+        <img src="https://s.gravatar.com/avatar/{{ user.email|makemd5 }}?s=80" alt="#">
         Hello, {{ user.username }} &nbsp;
         <a href="{% url 'accounts:update' %}">정보 수정</a>
         <a href="{% url 'accounts:change_password' %}">비번변경</a>

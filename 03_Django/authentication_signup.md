@@ -78,3 +78,30 @@ Authorization(권한, 허가) - 권한 부여
 - 현재 사용자의 인증 세션이 무효화 되는 것을 막고, 세션을 유지한 상태로 업데이트.
 - 현재 request와 새로운 session hash가 생긴 업데이트 된 user 객체를 적절히 업데이트.
 
+## django 서버가 켜질 때 초기화 순서
+
+1. `INSTALLED_APPS`의 각 항목을 imports 한다. (`위에서 아래로`)
+   - 이 과정에서 직간접적으로 모델을 import 해선 안된다.
+   - 1번 단계에서 app을 import하는 동안에 불필요한 제약들을 피하기 위해 이 단계에서는 모델을 가져오지 않는다.
+2. 각 어플리케이션의 models를 import 한다.
+   - 2단계가 완료가 되면, `get_model()`과 같은 모델에서 작동하는 APIs를 사용할 수 있게 된다. 
+   - `articles` / `accounts`처럼 2개의 app을 사용할 때, models.py에서 User class를 가져올 때 `get_user_model()` 대신 `settings.AUTH_USER_MODEL`를 사용하는 이유도 여기 있다.
+   - 2단계가 끝나야 `get_user_model()`을 사용할 수 있는데, 아직 accounts app이 INSTALLED_APP의 작성 순서 때문에 아직 IMPORT가 완료되지 않은 상황이라, `get_user_model()`이 어떤 User model을 return 해야 하는지 django가 알 수 없는 상황이다.
+   - 결론: 모든 곳에서 User model을 호출할 때는 `get_user_model()`을 사용한다. 단, `models.py`에서만 `settings.AUTH_USER_MODEL`을 사용한다.
+3. `AppConfig`의 `ready()`메서드를 실행한다.
+
+------
+
+## gravatar 프로필 이미지
+
+1. ModelForm Custom
+2. Custom template tags and filters
+
+------
+
+## Model relationships
+
+1. Many-to-one
+2. Many-to-Many
+
+**모델링은 현실 세계를 최대한 유사하게 반영하기 위해서 해야한다.**

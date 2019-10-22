@@ -1,3 +1,4 @@
+import hashlib
 from IPython import embed
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -33,7 +34,9 @@ def create(request):
         # 유효성 검증
         # form 이 유효한지 체크한다. (ex. blank=False와 같은 DB와 관련된 유효성 내용들)
         if form.is_valid():
-            article = form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             # form.cleaned_data 로 정제된 데이터를 받는다.
             # title = form.cleaned_data.get('title')
             # content = form.cleaned_data.get('content')
@@ -72,30 +75,36 @@ def detail(request, article_pk):
 def delete(request, article_pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
-        article.delete()
+        if request.user == article.user:
+            article.delete()
+        else:
+            return redirect(article)
     return redirect('articles:index')
 
 
 @login_required
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article) # binding 작업 (instance : modelform에서 initial의 역할)
-        if form.is_valid(): # 유효성 검증
-            # article.title = form.cleaned_data.get('title') # 가져온 데이터(article.title)에 바꿔서 넣어준다.
-            # article.content = form.cleaned_data.get('content') # 가져온 데이터(article.content)에 바꿔서 넣어준다.
-            article = form.save()
-            return redirect(article)
-    else:
-        # embed()
-        # ArticleForm 을 초기화 (이전에 DB에 저장된 데이터를 넣어준 상태)
-        # form = ArticleForm(initial={'title': article.title, 'content': article.content}) # initial : 기존의 값을 가져온다(딕셔너리 형태로!)
-        # __dict__ : article 객체 데이터를 딕셔너리 자료형으로 변환
-        # form = ArticleForm(initial=article.__dict__)
-        form = ArticleForm(instance=article)
+    if request.user == article.user:
+        if request.method == 'POST':
+            form = ArticleForm(request.POST, instance=article) # binding 작업 (instance : modelform에서 initial의 역할)
+            if form.is_valid(): # 유효성 검증
+                # article.title = form.cleaned_data.get('title') # 가져온 데이터(article.title)에 바꿔서 넣어준다.
+                # article.content = form.cleaned_data.get('content') # 가져온 데이터(article.content)에 바꿔서 넣어준다.
+                article = form.save()
+                return redirect(article)
+        else:
+            # embed()
+            # ArticleForm 을 초기화 (이전에 DB에 저장된 데이터를 넣어준 상태)
+            # form = ArticleForm(initial={'title': article.title, 'content': article.content}) # initial : 기존의 값을 가져온다(딕셔너리 형태로!)
+            # __dict__ : article 객체 데이터를 딕셔너리 자료형으로 변환
+            # form = ArticleForm(initial=article.__dict__)
+            form = ArticleForm(instance=article)
         # 위와 같이 복잡한 한 줄은 매직 머서드(__dict__)로 줄여서 쓸 수 있다.
-    # 1. POST 방식일 때 넘어오는 form => 검증에 실패한 form(오류 메세지도 포함된 상태의 form)
-    # 2. GET 방식일 때 넘어오는 form => 초기화된 form
+        # 1. POST 방식일 때 넘어오는 form => 검증에 실패한 form(오류 메세지도 포함된 상태의 form)
+        # 2. GET 방식일 때 넘어오는 form => 초기화된 form
+    else:
+        return redirect('articles:index')
     context = {'form': form, 'article': article,}
     return render(request, 'articles/form.html', context) # 서로 form을 쓰므로 create.html을 빌려와서 쓴다.(template은 공유하는 상태)
 
@@ -107,8 +116,10 @@ def comments_create(request, article_pk):
         if comment_form.is_valid():
             # commit=False => 객체를 Create 하지만, db에 레코드는 작성하지 않는다.
             comment = comment_form.save(commit=False)
+            comment.user = request.user
             comment.article_id = article_pk
             comment.save()
+            
     return redirect('articles:detail', article_pk)
 
 
@@ -116,7 +127,8 @@ def comments_create(request, article_pk):
 def comments_delete(request, article_pk, comment_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(Comment, pk=comment_pk)
-        comment.delete()
+        if request.user == comment.user:
+            comment.delete()
         return redirect('articles:detail', article_pk)
     return HttpResponse('You are Unauthorized', status=401)
     # 원래는 아래와 같이 작성
