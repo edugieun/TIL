@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.conf import settings
 
 # Create your models here.
-
 class Article(models.Model):
     title = models.CharField(max_length=10)
     content = models.TextField()
@@ -21,9 +20,8 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse("articles:detail", kwargs={"article_pk": self.pk})
 
-class Hashtag(models.Model):
-    content = models.CharField(max_length=50)
-    articles = models.ManyToManyField(Article, related_name='hashtags', blank=True) 
+
+    
 
 
 class Comment(models.Model):

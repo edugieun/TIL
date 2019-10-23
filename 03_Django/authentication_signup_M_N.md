@@ -1,3 +1,5 @@
+# Authentication
+
 ## http에서 쿠키와 세션 생긴 이유
 
 - 비연결지향(connectionless)
@@ -99,6 +101,8 @@ Authorization(권한, 허가) - 권한 부여
 
 ------
 
+# M:N
+
 ## Model relationships
 
 1. Many-to-one
@@ -129,4 +133,20 @@ Authorization(권한, 허가) - 권한 부여
 - `article.like_users` => 게시글을 조아요한 유저 - M:N
 - `user.like_articles` = > 유저가 좋아요를 누른 게시글(역참조, `related_name`) - M:N
 - `user.article_set` => 유저가 작성한 게시글(역참조) - 1:N
-- 
+
+-------
+
+## Profile
+
+1. 유저가 작성한 게시글 몰록
+2. 유저가 작성한 댓글 몰록
+3. 정렬은 모두 최근에 작성한 것 부터
+4. 각 게시글의 부가정보까지(좋아요, 댓글 몇 개 달렸는지)
+
+## with template tag
+
+- 복잡한 변수를 더 간단한 이름으로 저장(캐시)하며, 여러번 DB를 조회할 때(특히 비용이 많이 드는) 유용하게 사용 가능하다.
+
+------
+
+## 

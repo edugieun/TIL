@@ -128,3 +128,4 @@ STATIC_URL = '/static/'
 # models.py에서 user = models.ForeignKey(settings.AUTH_USER_MODEL, 가 쓰였지만,
 # settings.py에는 AUTH_USER_MODEL 변수가 보이지 않는다. 그 이유는,
 # AUTH_USER_MODEL = 'auth.User' 가 기본적으로 설정된 default이기 때문에 생략되어 있다.
+AUTH_USER_MODEL = 'accounts.User' # 기본적 User 모델을 auth에서 account app model user로 덮어쓴다.

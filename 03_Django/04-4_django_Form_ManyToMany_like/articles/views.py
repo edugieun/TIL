@@ -1,5 +1,6 @@
 import hashlib
 from IPython import embed
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, HttpResponse
@@ -64,10 +65,11 @@ def detail(request, article_pk):
     #     raise Http404('No Article matches the given query.')
     # context = {'article': article,}
     # return render(request, 'articles/detail.html', context)
-    article = get_object_or_404(Article, pk=article_pk)
-    comments = article.comment_set.all() # article의 모든 댓글
+    icle.comment_set.all() # article의 모든 댓글
+    person = get_oarticle = get_object_or_404(Article, pk=article_pk)
+    comments = artbject_or_404(get_user_model(), pk=article.user_id)
     comment_form = CommentForm() # 댓글 form
-    context = {'article': article, 'comment_form': comment_form, 'comments': comments,}
+    context = {'article': article, 'comment_form': comment_form, 'comments': comments, 'person': person,}
     return render(request, 'articles/detail.html', context)
 
 
@@ -137,7 +139,7 @@ def comments_delete(request, article_pk, comment_pk):
     #     comment.delete()
     # return redirect('articles:detail', article_pk)
 
-
+@login_required
 def like(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
 
@@ -148,3 +150,17 @@ def like(request, article_pk):
     else:
         article.like_users.add(request.user) # 좋아요
     return redirect('articles:index')
+
+@login_required
+def follow(request, article_pk, user_pk):
+    # 게시글 유저
+    person = get_object_or_404(get_user_model(), pk=user_pk) # get_user_model은 항상 함수이기 때문에 get_user_model() 괄호를 꼭 붙인다.
+    # 접속 유저
+    user = request.user
+    if person != user:
+        # 내(user)가 게시글 유저(person) 팔로워 목록에 이미 존재 한다면,
+        if person.followers.filter(pk=user.pk).exists():
+            person.followers.remove(user)
+        else:
+            person.followers.add(user)
+    return redirect('articles:detail', article_pk)
