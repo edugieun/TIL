@@ -65,10 +65,10 @@ def detail(request, article_pk):
     #     raise Http404('No Article matches the given query.')
     # context = {'article': article,}
     # return render(request, 'articles/detail.html', context)
-    icle.comment_set.all() # article의 모든 댓글
-    person = get_oarticle = get_object_or_404(Article, pk=article_pk)
-    comments = artbject_or_404(get_user_model(), pk=article.user_id)
+    article = get_object_or_404(Article, pk=article_pk)
+    comments =  article.comment_set.all() # article의 모든 댓글
     comment_form = CommentForm() # 댓글 form
+    person = get_object_or_404(get_user_model(), pk=article.user_id)
     context = {'article': article, 'comment_form': comment_form, 'comments': comments, 'person': person,}
     return render(request, 'articles/detail.html', context)
 
