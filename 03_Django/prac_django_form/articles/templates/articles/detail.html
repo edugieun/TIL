@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>DETAIL</h1>
+<hr>
+<p>작성자: {{ article.user }} </p>
+<p>title: {{ article.title }} </p>
+<p>content: {{ article.content }} </p>
+<p>created_at: {{ article.created_at }} </p>
+<p>updated_at: {{ article.updated_at }} </p>
+<hr>
+
+<form action="{% url 'articles:delete' article.pk %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="DELETE">
+</form>
+
+<form action="{% url 'articles:update' article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="UPDATE">
+  </form>
+<hr>
+<h2>COMMENT</h2>
+{% for comment in comments %}
+<p>내용: {{ comment.content }} | 작성자: {{ comment.user }} </p>
+{% endfor %}
+
+<form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+  {% csrf_token %}
+  {{ comment_form }}
+  <input type="submit" value="SUB">
+</form>
+<hr>
+<a href="{% url 'articles:index' %}">[목록]</a>
+{% endblock %}
