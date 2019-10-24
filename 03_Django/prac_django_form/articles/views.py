@@ -73,6 +73,7 @@ def update(request, article_pk):
             form = ArticleForm(instance=article)
     else:
         return redirect('articles:index')
+
     context = {'form': form, 'article': article,}
     return render(request, 'articles/form.html', context)
 
@@ -86,3 +87,19 @@ def comments_create(request, article_pk):
             comment.article_id = article_pk
             comment.save()
     return redirect('articles:detail', article_pk)
+
+@require_POST
+def comment_delete(request, article_pk, comment_pk):
+    if request.user.is_authenticated:
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+        return redirect('articles:detail', article_pk)
+    return HttpResponse('You are Unauthorized', status=401)
+
+def like(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+    return redirect('articles:index')

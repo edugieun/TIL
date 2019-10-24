@@ -52,7 +52,7 @@ def delete(request):
     request.user.delete()
     return redirect('articles:index')
 
-@login_required
+@require_POST
 def update(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
