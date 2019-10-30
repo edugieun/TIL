@@ -64,7 +64,7 @@ let, const의 정의가 평가되기까지 초기화가 되지 않는다는 의�
   - Primitive
   - Reference
 
-### Primitive
+- Primitive
 
 - 불변하다는 특징을 띄고 있다.
 
@@ -127,5 +127,25 @@ let, const의 정의가 평가되기까지 초기화가 되지 않는다는 의�
         console.log(last_name) // null. 의도적으로 값이 없음을 표현
         ```
 
-        
+
+- 연산자
+  - == : 동등 연산자
+  - === : 일치 연산자
+  - 삼항연산자: `수식` ? `true일 때` : `false일 때`
+
+------
+
+## JSON
+
+- JS Object Notation, JS 객체 표기법
+- KEY-VALUE 형태의 자료구조를 JS 객체와 유사한 모습으로 표현하는 표기법
+- 모습만 비슷할 뿐이고 실제로 Object 처럼 사용하려면 다른 언어들 처럼 JS에서도 Parsing(구문 분석) 작업이 필요하다.
+- Object - JS의 key-value 페어의 자료 구조
+- JSON - 데이터를 표현하기 위한 단순한 문자열. 단지 이를 사용하기 쉽게 parsing 작업을 해줘야 한다.
+
+------
+
+## Helper
+
+- 자주 사용하는 로직을 재활용할 수 있게 만든 일종의 Library.
 
