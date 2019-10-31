@@ -1,0 +1,65 @@
+<!-- 2. axios CDN으로 사용하기 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    img {
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="add-button">ADD DOG</button>
+  <button id="add-button-cat">ADD CAT</button>
+  <div class="animals"></div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    // chrome에서 getDogImage 함수를 호출할 때 비동기식으로 사진을 불러온다는 것을 알아두자.
+    const getDogImage = function () {
+      axios.get('https://dog.ceo/api/breeds/image/random')
+        // 아래에서 받은 object 가 promise object라고 부른다.
+        // .then(response => console.log(response.data.message))
+        .then(response => {
+          const imgUrl = response.data.message
+          // img tag 만들기
+          const imgTag = document.createElement('img')
+          // imgTag 의 src에 imgUrl 넣기
+          imgTag.src = imgUrl
+          // .animals 라는 div의 자식요소로 imgTag 를 붙이자.
+          document.querySelector('.animals').append(imgTag)
+        })
+        .catch(error => console.log(error))
+    }
+
+    const button = document.querySelector('#add-button')
+    button.addEventListener('click', getDogImage)
+    // addEventListener 로 호출하는 callback 함수는 화살표함수가아닌 표준 형태를 쓸 것
+
+
+    const getCatImage = function () {
+      axios.get('https://api.thecatapi.com/v1/images/search')
+        .then(response => {
+          // dog api와는 다르게 array 형태로 나오므로 index로 접근한다.
+          const imgUrl = response.data[0].url
+          const imgTag = document.createElement('img')
+          imgTag.src = imgUrl
+          document.querySelector('.animals').append(imgTag)
+        })
+        .catch(error => console.log(error))
+    }
+    const buttonCat = document.querySelector('#add-button-cat')
+    buttonCat.addEventListener('click', getCatImage)
+
+    // 비동기이기 때문에, 누르는 순서가 아닌, 처리되는 순서대로 이미지가 나온다.
+
+  </script>
+</body>
+
+</html>
