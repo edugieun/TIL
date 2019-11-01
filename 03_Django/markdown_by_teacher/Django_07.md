@@ -181,15 +181,15 @@
 	...(title / content)
   	image = models.ImageField(blank=True)
 	...(created_at / updated_at)
-  ```
+```
 
   - image 컬럼 코드를 기존 컬럼 코드 사이에 넣어도(title, content와 created_at과 updated_at 사이에 넣어도) 실제 추가 될 때는 테이블의 제일 우측(뒤)에 추가된다.
 
   ```bash
 $ python manage.py makemigrations
   $ python manage.py migrate
-```
-  
+  ```
+
 > **추가 된 컬럼 확인**
   >
   > <img width="814" alt="7-1" src="https://user-images.githubusercontent.com/52446416/65940972-dac95180-e464-11e9-8fca-76a3947c6991.png">
@@ -200,7 +200,7 @@ $ python manage.py makemigrations
 > sqlite> .schema articles_article
   > CREATE TABLE IF NOT EXISTS "articles_article" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(20) NOT NULL, "content" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "image" varchar(100) NOT NULL);
 > ```
-  
+
 - 모델의 변경 사항 적용
 
   - `makemigrations` 에서 에러가 난다면 `pip install Pillow` 설치 후 다시 진행
@@ -265,8 +265,8 @@ $ python manage.py makemigrations
     <hr>
     <a href="{% url 'articles:index' %}">[back]</a>
   {% endblock %}
-  ```
-  
+```
+
   
 
 ### 1.3 Read
@@ -398,7 +398,7 @@ $ python manage.py makemigrations
 
     <img width="234" alt="7-3" src="https://user-images.githubusercontent.com/52446416/65941501-26302f80-e466-11e9-847c-75a7ec6e75ab.png">
 <img width="691" alt="7-4" src="https://user-images.githubusercontent.com/52446416/65941502-26c8c600-e466-11e9-8cef-dafa71200b52.png">
-    
+  
 - `settings.py]`에서 `MEDIA_ROOT`를 설정 해주지 않았기 때문이다.
   
   

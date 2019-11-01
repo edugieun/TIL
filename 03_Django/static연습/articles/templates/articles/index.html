@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <img src="{% static 'articles/images/dog.jpg' %}" alt="static_img" style="width: 300px;">
+  <img src="{% static '/images/dog.jpg' %}" alt="assets_img" style="width: 300px;">
+  <h1 class="text-center">Articles</h1>
+  <a href="{% url 'articles:create' %}">[NEW]</a>
+  <hr>
+  {% for article in articles %}
+    <p>글 번호: {{ article.pk }}</p>
+    <p>글 제목: {{ article.title }}</p>
+    <p>글 내용: {{ article.content }}</p>
+    <a href="{{ article.get_absolute_url }}">[DETAIL]</a>
+    <hr>
+  {% endfor %}
+{% endblock %}
