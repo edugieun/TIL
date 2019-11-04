@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    {{ message }} - {{ count }}
+    <!-- 보간법(interpolation) -->
+  </div>
+  
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue!',
+        count: 0,
+      },
+      methods: {
+        // 표현식
+        plus: function() {
+          this.count++ // this는 Vue instance 내에서는 data내의 값들로 접근한다.
+        }, 
+        // 화살표 함수로 하면 undefined가 뜬다.
+        // plus: () => {
+        //   this.count++ // this는 Vue instance 내에서는 data내의 값들로 접근한다.
+        // }, 
+        
+        // 선언식
+        minus() {
+          this.count--
+        }
+      }
+    })
+    // script상에서 method 접근 방법
+    // app.message === app.$data.message(선호방식)
+    
+  </script>
+</body>
+
+</html>

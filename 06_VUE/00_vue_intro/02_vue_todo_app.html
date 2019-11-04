@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <!-- v-bind의 shortcut으로 그냥 :src 만 쓸 수 있다. -->
+    <img v-bind:src="vueImage" alt="todo-list">
+    <li v-for="todo in todos" v-if="!todo.completed" v-on:click="check(todo)">
+      {{ todo.content }}
+    </li>
+    <li v-else v-on:click="check(todo)">
+      [완료!]
+    </li>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        todos: [
+          {
+            content: '점심 메뉴 고민',
+            completed: true,  
+          },
+          {
+            content: '사다리 타기',
+            completed: true,  
+          },
+          {
+            content: '낮잠 자기',
+            completed: false,  
+          },
+          {
+            content: '야자하기',
+            completed: false,  
+          },
+        ],
+        vueImage: 'http://data5.onnada.com/character/201906/thumb_2108816494_8641925f_3B113B21.png'
+      },
+      methods: {
+        check: function(todo) {
+          todo.completed = !todo.completed
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
