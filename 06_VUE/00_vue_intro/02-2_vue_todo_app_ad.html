@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- 드랍다운 만들기 -->
+    <select v-model="status">
+      <option value="all" selected>all</option>
+      <option value="active">active</option>
+      <option value="completed">completed</option>
+    </select>
+
+    <dir :style="{ color:activeColor, fontSize: fontSize + 'px' }">
+      Style test
+    </dir>
+
+    <!-- v-bind의 shortcut으로 그냥 :src 만 쓸 수 있다. -->
+    <img v-bind:src="vueImage" alt="todo-list">
+
+    <!-- methods와 다르게 computed는 이미 리턴값 자체이기 때문에 함수호출처럼 소괄호'()'를 사용하지 않는다.-->
+    <div v-for="todo in computedTodosByStatus" :class="{ completed: todo.completed }" v-bind:key="todo.id">
+      <!-- <div v-for="todo in todosByStatus()" v-bind:class="{ completed: todo.completed }" v-bind:key="todo.id"> -->
+      <!-- <div v-for="todo in todos" v-bind:class="{ completed: todo.completed }"> -->
+      <!-- completed: (true or false) -->
+
+      <!-- <div v-for="todo in todos" v-bind:class="todo.completed ? 'completed' : ''"> 삼항 연산자 이용 -->
+
+      <input type="checkbox" v-model="todo.completed">
+      <span>{{ todo.content }}</span>
+    </div>
+
+    <div>
+      <input type="text" v-model="newTodo" v-on:keyup.enter="addTodo">
+      <button v-on:click="addTodo">+</button>
+    </div>
+    <footer>
+      <button @click="clearCompleted">Clear</button>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const STORAGE_KEY = 'vue-todos'
+    const todoStorage = {
+      fetch: function () {
+        // parse: String -> JSON
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') // 없다면 빈 배열로 선언
+      },
+      save: function (todos) {
+        // stringify: JSON -> String
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+      }
+    }
+
+    const app = new Vue({
+      el: '#app',
+
+      data: {
+        status: 'all',
+
+        // style 꾸미기
+        activeColor: 'red',
+        fontSize: 30,
+
+        todos: [{
+            id: 1,
+            content: '점심 메뉴 고민',
+            completed: true,
+          },
+          {
+            id: 2,
+            content: '사다리 타기',
+            completed: true,
+          },
+          {
+            id: 3,
+            content: '낮잠 자기',
+            completed: false,
+          },
+          {
+            id: 4,
+            content: '야자하기',
+            completed: false,
+          },
+        ],
+        vueImage: 'http://data5.onnada.com/character/201906/thumb_2108816494_8641925f_3B113B21.png',
+        newTodo: '',
+      },
+      // 완료 처리 하기
+      methods: {
+        check: function (todo) {
+          todo.completed = !todo.completed
+        },
+        // 새 할 일 추가하기
+        addTodo: function () {
+          if (this.newTodo.length !== 0) {
+            this.todos.push({
+              // id를 사용하지 않으면 원하는 동작이 안되는 경우가 있으므로,
+              // 객체마다 고유한 id 값을 갖도록 해준다.
+              id: Date.now(),
+              content: this.newTodo,
+              completed: false,
+            })
+            this.newTodo = ''
+          }
+        },
+        // 완료 목록 안보이게 하기
+        clearCompleted: function () {
+          const notCompletedTodos = this.todos.filter(todo => {
+            // completed 가 false인 객체만 모아서 배열로 return
+            return !todo.completed
+          })
+          this.todos = notCompletedTodos
+        },
+      },
+
+      // computed 속성 사용하기
+      computed: {
+        // 분기시키기
+        computedTodosByStatus: function () {
+          // 진행중인 일(완료되지 않은 일)
+          if (this.status === 'active') {
+            return this.todos.filter(todo => {
+              return !todo.completed
+            })
+          }
+          // 완료된 일
+          if (this.status === 'completed') {
+            return this.todos.filter(todo => {
+              return todo.completed
+            })
+          }
+          // all (active, completed 가 아닌, 완료 혹은 미완료가 모두 포함된 배열)
+          return this.todos
+        }
+      },
+
+      // watch 속성 사용하기
+      watch: {
+        todos: {
+          // handler: 특정 데이터가 변경되었을 때 실행할 함수
+          handler: function(todos) {
+            todoStorage.save(todos)
+          },
+          // deep속성: 객체의 nested item 들도 관찰할지 유무를 설정. true인 경우 내부 요소들도 감시.
+          deep: true,
+        }
+      },
+      
+      // mounted 속성 사용하기
+      mounted: function() {
+        this.todos = todoStorage.fetch()
+      },
+    })
+  </script>
+</body>
+
+</html>

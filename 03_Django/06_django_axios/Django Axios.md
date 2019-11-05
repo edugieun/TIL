@@ -20,10 +20,6 @@
 - 웹 사이트에서 비동기식 기능을 구현하기 위한 기법이다.
 - 예를 들어, 좋아요를 눌렀을 때 새로고침되지 않고 바로 좋아요가 반영되게 하는 것이다.
 
-## 실습 Template
-
-- 04-6_django_Form_ManyToMany_Social_Login_OAuth
-
 ------
 
 ## Axios CDN 추가
