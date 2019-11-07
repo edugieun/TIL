@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>여기는 최상위 컴포넌트입니다.</h1>
+    <h1>여기는 최상위 컴포넌트입니다. 수정수정</h1>
     <todo-list category="취업특강"></todo-list>
     <todo-list category="SSAFY"></todo-list>
     <todo-list category="기타"></todo-list>
