@@ -52,5 +52,5 @@ console.log(jsonData) // {"coffee":"Americano","iceCream":"Mint Choco"}
 console.log(typeof(jsonData)) // string
 
 const parseData = JSON.parse(jsonData)
-console.log(parseData) // { coffee: 'Americano', iceCream: 'Mint Choco' } // 트레일링 콤마는 객체에서만 쓸 수 있고, JSON에서는 사용 불가
+console.log(parseData) // { coffee: 'Americano', iceCream: 'Mint Choco',} // 트레일링 콤마는 객체에서만 쓸 수 있고, JSON에서는 사용 불가
 console.log(typeof(parseData)) // object

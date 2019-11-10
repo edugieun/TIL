@@ -27,3 +27,4 @@ const totlaSum = arr.reduce( function (total, x) {
 // const totlaSum = arr.reduce( (total, x) => total += x, 0)
 // const totlaSum = arr.reduce( (total, x) => total += x)
 console.log(totlaSum)
+console.log(arr)

@@ -1,6 +1,6 @@
 //if
 const userName = 'ssafy'
-​
+
 if (userName === '1q2w3e4r') {
   message = '<h1>This is admin page</h1>'
 } else if (userName === 'ssafy') {
@@ -8,8 +8,8 @@ if (userName === '1q2w3e4r') {
 } else {
   message = `<h1>hello ${userName}</h1>`
 }
-​
-//switch
+console.log(message)
+// switch
 switch (userName) {
   case '1q2w3e4r': {
     message = '<h1>this is admin</h1>'
@@ -21,6 +21,6 @@ switch (userName) {
   }
   default: {
     message = `<h1>hello ${userName}</h1>`
-    console.log(message)
   }
 }
+console.log(message)

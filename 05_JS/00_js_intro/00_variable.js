@@ -67,6 +67,7 @@ let variableName
 const dogs = []
 // 정규 표현식을 'r' 로 시작
 const rDecs = /.*/
+console.log(rDecs)
 // 함수
 function getPropertyName() {
   return 1
