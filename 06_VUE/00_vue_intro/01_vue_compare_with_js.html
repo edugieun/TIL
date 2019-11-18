@@ -17,8 +17,8 @@
   <!-- VUE -->
   <h3>VUE</h3>
   <div id="app">
-    <input type="text" id="vue-input" v-model="message">
-    <p id="veu-p">{{ message }}</p>
+    <input type="text" v-model="message">
+    <p>{{ message }}</p>
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -29,7 +29,6 @@
       const value = e.target.value
       document.querySelector('#js-p').innerText = value
     })
-  
     // Vue
     const app = new Vue({
       el: '#app',
@@ -39,11 +38,6 @@
     })
 
   </script>
-
-  
-  
-  
-
 </body>
 
 </html>
