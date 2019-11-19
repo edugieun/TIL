@@ -38,7 +38,7 @@ Signature(서명): Header와 Payload의 값에 비밀키로 hasing
 장점
 
 1. 세션/쿠키처럼 별도의 저장소 관리가 필요 없고 발급한 이후에 검증만 하면 된다.
-2. 토큰을 기반으로 한 다른 인증시스템에 접근이 용이하기 때문에 확장성이 뛰어나다.
+2. 토큰을 기반으로 한 다른 인증시스템에 접근이 용이하기 때문에 확장성, 이식성이 뛰어나다.
 3. 모바일 환경에 적합(쿠키와 같은 데이터로 인증할 필요가 없기 때문)
 4. Python, JS, Ruby, Go 등 주류 프로그래밍 언어에서 대부분 지원된다.
 
@@ -87,3 +87,7 @@ Signature(서명): Header와 Payload의 값에 비밀키로 hasing
 1. 서버(Django)와 클라이언트(Vue)가 같은 도메인과 포트를 사용하도록 한다.
 2. 서버에서 cross-origin HTTP 요청을 허가한다.
    - 실제 API 서버들은 이러한 CORS 제한과 관련된 처리를 모두 해둬야 한다.
+
+![image](https://user-images.githubusercontent.com/52814897/69104747-b5dc7c80-0aac-11ea-9f2a-ca973e49faee.png)
+
+[ https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS ]

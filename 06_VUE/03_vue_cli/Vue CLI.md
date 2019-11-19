@@ -64,4 +64,10 @@ $ npm run serve
    </div>
    ```
 
-   
+
+------
+
+## npm install
+
+- github에 push할 경우 node modules은 안 올라가므로, 나중에 pull 했을 경우 다시 node modules을 생성할 필요가 있다.
+- 이 때, `npm install`을 해주면 `package.json`파일을 기반으로 module을 생성해준다.

@@ -26,6 +26,7 @@
 
 <script>
   import axios from 'axios'
+  import router from '../router'
 
   export default {
     name: 'LoginForm',
@@ -43,11 +44,20 @@
       login() {
         if (this.checkForm()) {
           this.loading = true
-          axios.get('http://127.0.0.1:8000', this.credentials)
+          // django jwt 생성하는 주소로 요청을 보냄
+          // 이때 post 요청으로 보내야하며 사용자가 입력한 로그인 정보(credentials)를 같이 넘긴다.
+          axios.post('http://127.0.0.1:8000/api-token-auth/', this.credentials)
           .then(res => {
-            console.log(res)
+            this.$session.start()
+            this.$session.set('jwt', res.data.token)
+            router.push('/')
+            // 로그인 이후에 loading의 상태를 다시 false로 변경
+            // 그래야 spinner가 계속 돌지 않고 로그인 form을 받아 볼 수 있다.
+            this.loading = false
           })
           .catch(err => {
+            // 로그인 실패 시 loading의 상태 다시 false
+            this.loading = false
             console.log(err)
           })
         }
@@ -60,8 +70,8 @@
         if (!this.credentials.username) {
           this.errors.push("아이디를 입력해주세요.")
         }
-        if (this.credentials.password.length < 8) {
-          this.errors.push("비번은 8글자 이상 입력")
+        if (this.credentials.password.length < 3) {
+          this.errors.push("비번은 3글자 이상 입력")
         }
         if (this.errors.length == 0) {
           return true
