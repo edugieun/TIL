@@ -36,28 +36,37 @@
           username: '',
           password: '',
         },
-        loading: false,
+        // loading: false,
         errors: [],
+      }
+    },
+    computed: {
+      loading: function() {
+        return this.$store.state.loading
       }
     },
     methods: {
       login() {
         if (this.checkForm()) {
-          this.loading = true
+          // this.loading = true
+          this.$store.dispatch('startLoading')
           // django jwt 생성하는 주소로 요청을 보냄
           // 이때 post 요청으로 보내야하며 사용자가 입력한 로그인 정보(credentials)를 같이 넘긴다.
           axios.post('http://127.0.0.1:8000/api-token-auth/', this.credentials)
           .then(res => {
-            this.$session.start()
-            this.$session.set('jwt', res.data.token)
+            // this.$session.start()
+            // this.$session.set('jwt', res.data.token)
+            this.$store.dispatch('endLoading')
+            this.$store.dispatch('login', res.data.token)
             router.push('/')
             // 로그인 이후에 loading의 상태를 다시 false로 변경
             // 그래야 spinner가 계속 돌지 않고 로그인 form을 받아 볼 수 있다.
-            this.loading = false
+            // this.loading = false
           })
           .catch(err => {
             // 로그인 실패 시 loading의 상태 다시 false
-            this.loading = false
+            // this.loading = false
+            this.$store.dispatch('endLoading')
             console.log(err)
           })
         }

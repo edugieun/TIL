@@ -247,9 +247,43 @@
 
 ## git push -u origin feature/login
 
+------
+
+생성 및 이동
+
+git checkout -b <branch>
+
+이동
+
+git checkout <branch>
+
+삭제
+
+git branch -d <branch>
 
 
 
+푸시
+
+git push origin <branch>
 
 
+
+머지 후 버전 맞추기
+
+다시 master로 돌아온 후에
+
+git pull upstream master
+
+
+
+------
+
+강제로 중앙 저장소(upstream) 동기화
+
+```bash
+$ git fetch --all
+$ git reset --hard upstream/master
+$ git pull upstream master
+```
 
