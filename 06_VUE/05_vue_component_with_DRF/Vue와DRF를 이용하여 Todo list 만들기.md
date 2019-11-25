@@ -1,4 +1,13 @@
-# Vue와 DRF를 이용하여 Todo list 만들기
+# Vue와DRF를 이용하여 Todo list 만들기
+
+## 개요
+
+- Frontend 역할을 하는 Vue가 Backend(Server) 역할을 하는 Django에 요청(Request)를 보내기 위해서는 항상 JWT라는 기술이 필요하다.
+
+### JWT
+
+- 
+
 ## 흐름도
 
 1. (Django) 회원 가입
