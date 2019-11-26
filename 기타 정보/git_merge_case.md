@@ -287,3 +287,15 @@ $ git reset --hard upstream/master
 $ git pull upstream master
 ```
 
+원하는 커밋 으로 돌아가기
+
+```bash
+$ git reset --hard <commit 버전>
+$ git reset --hard a261df78acd53f8b93dff20098d1397a51caea55
+
+reset 전에 추가된 파일이나, reset해도 지워지지 않는 파일이 있으므로
+이를 삭제.
+단, venv, .env 파일 또한 삭제되므로 주의.
+$ git clean -dfx
+```
+
