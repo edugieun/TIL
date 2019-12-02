@@ -66,10 +66,10 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
       }
     }
-
+    
     const app = new Vue({
       el: '#app',
-
+      
       data: {
         status: 'all',
 
@@ -77,27 +77,7 @@
         activeColor: 'red',
         fontSize: 30,
 
-        todos: [{
-            id: 1,
-            content: '점심 메뉴 고민',
-            completed: true,
-          },
-          {
-            id: 2,
-            content: '사다리 타기',
-            completed: true,
-          },
-          {
-            id: 3,
-            content: '낮잠 자기',
-            completed: false,
-          },
-          {
-            id: 4,
-            content: '야자하기',
-            completed: false,
-          },
-        ],
+        todos: [],
         vueImage: 'http://data5.onnada.com/character/201906/thumb_2108816494_8641925f_3B113B21.png',
         newTodo: '',
       },
@@ -155,6 +135,7 @@
         todos: {
           // handler: 특정 데이터가 변경되었을 때 실행할 함수
           handler: function(todos) {
+            
             todoStorage.save(todos)
           },
           // deep속성: 객체의 nested item 들도 관찰할지 유무를 설정. true인 경우 내부 요소들도 감시.

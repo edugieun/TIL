@@ -1,8 +1,0 @@
-keypress reverse
-없는 요소 indexOf
-post cookiename
-object로 바꾸는 메서드
-filter 중복
-parse
-typeof (function { return "hello"})
-typeof (function { return "hello"} ())

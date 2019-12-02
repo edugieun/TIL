@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views # 마침표 (.)는 현재 위치(폴더)라는 의미
+from . import views
+# 마침표 (.)는 현재 위치(폴더)라는 의미
 
 urlpatterns = [
     # 다른건 다 위로 쌓는데 app내부의 urls만 아래로 쌓음. 장고가 그렇게 하라고 함.

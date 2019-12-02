@@ -88,27 +88,31 @@
 - 주석(Comment)
 
   - `<!-- 주석 내용 -->`
-
 - 요소(Element)
 
   - `<h1> contents </h1>`
   - `<img src="url"/>` (Self-closing element)
-
 - 속성(Attribute)
 
   - `<a href(속성명)="https://google.com(속성값)"></a>` 
   - 공백(`" "`) 사용 No!
+- HTML DOM Tree
+  - DOM - Document Object Model
+    - "The HTML DOM is a standard for how to get, change, add, or delete HTML elements." - w3school
+  - HTML 문서가 web을 통해 load 될 때, 각각의 태그와 요소들은 객체화되어 아래와 같은 부모, 자식 및 형제 관계를 갖는 tree 구조를 생성하게 된다. 
+  - 이런 객체로 이루어진 tree를 추후에 Javascript나 다른 언어들을 통해 접근할 수 있고, html 요소를 추가, 삭제, 수정 할 수 있다.
 
-- DOM 트리
+![image](https://user-images.githubusercontent.com/52814897/69914714-86554900-148a-11ea-8cfe-3c164027a443.png)
 
-  - Indent는 Tab(2 space)
+<center>출처 - w3school</center>
 
-  ```html
-  <body> <!-- body태그와 h1태그는 부모(parent)-자식(child) 관계-->
-      <h1> 웹문서 </h1> <!-- h1태그와 ul태그는 형제관계(sibling) -->
-      <ul>
-          <li>HTML</li>
-          <li>CSS</li>
-      </ul>
-  </body>
-  ```
+```html
+<body> <!-- body태그와 h1태그는 부모(parent)-자식(child) 관계-->
+    <h1> 웹문서 </h1> <!-- h1태그와 ul태그는 형제관계(sibling) -->
+    <ul>
+        <li>HTML</li>
+        <li>CSS</li>
+    </ul>
+</body>
+```
+

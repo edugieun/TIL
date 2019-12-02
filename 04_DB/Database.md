@@ -73,7 +73,6 @@
   SELECT DISTINCT column FROM table;
   ```
 
-- 
 
 ### DCL-데이터 제어 언어
 

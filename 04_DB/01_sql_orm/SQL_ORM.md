@@ -383,13 +383,11 @@ Out[33]: <QuerySet [{'first_name': '은정'}]>
    # orm
    In [41]: User.objects.order_by('balance', '-age')[:10]
    ```
-```
-   
    ```sql
    -- sql
    sqlite> SELECT * FROM users_user
     ...> ORDER BY balance, age DESC LIMIT 10;
-```
+   ```
 
 4. 성, 이름 내림차순 순으로 5번째 있는 사람
 
@@ -397,15 +395,12 @@ Out[33]: <QuerySet [{'first_name': '은정'}]>
    # orm
    In [41]: User.objects.order_by('-last_name', '-first_name')[4]
    ```
-```
-   
-      ```sql
+
+   ```sql
    -- sql
    sqlite> SELECT * FROM users_user
     ...> ORDER BY last_name DESC, first_name DESC LIMIT 1 OFFSET 4;
-```
-
-
+   ```
 
 ---
 
@@ -432,11 +427,11 @@ Out[33]: <QuerySet [{'first_name': '은정'}]>
    Out[44]: {'avg_value': 28.217821782178216}
    ```
 
-      ```sql
+```sql
    -- sql
    sqlite> SELECT AVG(age) FROM users_user;
    28.2178217821782
-      ```
+```
 
 2. 김씨의 평균 나이
 
@@ -489,20 +484,15 @@ Out[33]: <QuerySet [{'first_name': '은정'}]>
 Out[50]: {'balance__sum': 14425140}
    ```
    
-      ```sql
+   ```sql
    -- sql
    sqlite> SELECT SUM(balance) FROM users_user;
    14425140
-      ```
+   ```
 
-
-
-
-
-```
 # 1:N
 
-​```python
+```python
 u1 = User.objects.create(username='Kim')
 u2 = User.objects.create(username='Lee')
 
@@ -517,7 +507,7 @@ c3 = Comment.objects.create(content='2글1댓', article=a2, user=u1)
 c4 = Comment.objects.create(content='4글1댓', article=a4, user=u1)
 c5 = Comment.objects.create(content='3글1댓', article=a3, user=u2)
 c6 = Comment.objects.create(content='3글2댓', article=a3, user=u1)
-​```
+```
 
 1. 모든 댓글 출력
 
@@ -529,15 +519,11 @@ c6 = Comment.objects.create(content='3글2댓', article=a3, user=u1)
 7. 1번 사람(`u1`)이 작성한 첫번째 게시글의 1, 2번째 댓글
 8. 1번 사람(`u1`)이 작성한 게시글을 제목 내림차순으로 정렬
 
-
-
-
-
 ## M:N Many to many
 
 ### 1. 중개 모델
 
-​```python
+```python
 class Doctor(models.Model):
     name = models.TextField()
 
@@ -547,15 +533,15 @@ class Patient(models.Model):
 class Reservation(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-​```
+```
 
 1. 예약 만들기
 
-   ````python
+````python
    d1 = Doctor.objects.create(name='kim')
    p1 = Patient.objects.create(name='taewoo')
    Reservation.objects.create(doctor=d1, patient=p1)
-   ````
+````
 
 2. 1번 환자의 예약 목록
 
@@ -586,7 +572,7 @@ class Reservation(models.Model):
 >
 > `through` 옵션이 없으면, 기본적으로 `앱이름_patient_doctor` 라는 이름의 테이블을 생성한다.
 
-​```python
+```python
 class Doctor(models.Model):
     name = models.TextField()
 
@@ -597,16 +583,17 @@ class Patient(models.Model):
 class Reservation(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-​```
+```
 
 * 마이그레이션 파일을 만들거나 마이그레이트를 할 필요가 없다!
 * 즉, 데이터베이스는 전혀 변경되는 것이 없다.
 
 1. 1번 의사의 예약 목록
 
-   ```python
-   d1.reservation_set.all()
-   ```
+```python
+d1.reservation_set.all()
+```
+```
 
 2. 1번 의사의 환자 목록
 
@@ -614,7 +601,7 @@ class Reservation(models.Model):
 
    ```python
    d1.patient_set.all()
-   ```
+```
 
 3. 1번 환자의 의사 목록
 
@@ -628,7 +615,7 @@ class Reservation(models.Model):
 
 ### 2.1. `related_name`
 
-​```python
+```python
 class Doctor(models.Model):
     name = models.TextField()
 
@@ -641,7 +628,7 @@ class Patient(models.Model):
 class Reservation(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-​```
+```
 
 * 역참조시 `related_name` 옵션으로 직접 설정할 수 있다.
   * 설정하지 않으면 기본적으로 `Model명_set`으로 된다.
@@ -651,22 +638,22 @@ class Reservation(models.Model):
 
 1. 1번 의사의 환자 목록
 
-   ```python
+```python
    d1.patients.all()
-   ```
+```
 
    
 
 ## 3. 중개모델 없이 작성
 
-​```python
+```python
 class Doctor(models.Model):
     name = models.TextField()
 
 class Patient(models.Model):
     name = models.TextField()
     doctors = models.ManyToManyField(Doctor, related_name='patients')
-​```
+```
 
 * `앱이름_patient_doctors` 로 테이블이 자동으로 생성된다.
 * 별도의 컬럼이 필요 없는 경우는 위와 같이 작성한다.
@@ -674,16 +661,15 @@ class Patient(models.Model):
 
 1. 예약 생성
 
-   ```python
+```python
    d2 = Doctor.object.create(name='Kim')
    p2 = Patient.object.create(name='Kim')
    
    d2.patients.add(p2)
-   ```
+```
 
 2. 예약 삭제
 
    ```python
    d2.patients.remove(p5)
    ```
-```

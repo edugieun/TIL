@@ -288,24 +288,13 @@ computed: {
 ```
 
 
-
-
-
-
 - 값이 없을 수도 있으니 null로  초기화하고, if문으로 값이 있을 경우만 처리하여 error가 안뜨게 한다.
-
-
-
 - 유튜브 API Key 발급받기
 - axios 설치 `npm i axios` 및 등록
 
 ```javascript
 import axios from 'axios'
 ```
-
-
-
-
 
 .env.local 파일에 key 넣기
 
@@ -345,18 +334,14 @@ methods: {
       })
 ```
 
-
-
-- - 
 - `data` object가 (videos 배열이 있는 곳) 업데이트 되면, 해당 컴포넌트 (App.vue)가 템플릿을 다시 렌더링 한다.
 - 그리고 바로 자식 컴포넌트들도 모두 다시 렌더링 된다.
 - `VideoList`컴포넌트가 비디오 배열을 받아 화면에 보여주게 된다.
 
+------
 
-
-bootstrap 넣는 위치: public/index.html
-
-개인 컴포넌트 스타일 먹이기 : `scoped` 속성 사용
+- bootstrap 넣는 위치: public/index.html
+- 개인 컴포넌트 스타일 먹이기 : `scoped` 속성 사용
 
 ```html
 <style scoped>...</style>
@@ -380,7 +365,3 @@ props: {
     }
   }
 ```
-
-...
-
-- 
