@@ -276,3 +276,15 @@ eb status 로 CNAME 확인 후 production `ALLOWED_HOSTS`에 추가
 다시 add . / commit 까지하고
 
 eb는 push로 보내는게 아니로 `eb deploy`로 보낸다.
+
+------
+
+## 기존 서버 연동하기
+
+- 다른 환경(컴퓨터)에서 이미 배포한 서버의 작업을 현재 환경(컴퓨터)에서 수정하고 싶은 경우 `eb init -i`로 현재 프로젝트와 서버를 먼저 매칭시킨다.
+
+## Troubleshooting
+
+- `ERROR   Your requirements.txt is invalid. Snapshot your logs for details.`
+  - 원인: requirements.txt에 awsebcli가 있는 경우 발생한다.
+  - 해결: awsebcli 설치 이후에 pip freeze는 절대하면 안됨. 따라서 새로운 라이브러리를 설치해야 하면 가상환경 모두 재설치하는 수밖에 없다.
