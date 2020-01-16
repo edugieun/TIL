@@ -108,7 +108,7 @@ AUTH_USER_MODEL = 'todos.User'
 
 - 로그인 폼 만들기
 - axios로 장고에 요청하기
-- `vue-session` 플러그인 설치 `$ npm i vue-session` 및 세팅
+- `vue-session` 플러그인 설치 `$ npm i vue-session` 및 세팅(main.js 파일에 import 해줘야한다.)
   -  https://www.npmjs.com/package/vue-session 
   - JWT Token에 접근할 수 있게 해준다.
 - ` this.$session.start() `
