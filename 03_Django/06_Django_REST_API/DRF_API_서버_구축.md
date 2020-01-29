@@ -67,6 +67,12 @@ $ python manage.py dumpdata musics > dummy.json
 $ python manage.py dumpdata --indent 2 musics > dummy.json
 ```
 
+- 특정 앱의 특정 모델에 있는 데이터만 추출하고 싶을 경우는 아래와 같이 한다.
+
+```bash
+$ python manage.py dumpdata musics.artist --indent 2 > artist.json
+```
+
 ## loaddata
 
 ### fixture
@@ -89,6 +95,7 @@ $ python manage.py dumpdata --indent 2 musics > dummy.json
   ```
 
 - Seed Data가 있다면 `loaddata`로 데이터를 django DB에 저장한다.
+  
   - seed data가 없다면 test를 위해 django admin 페이지에 직접 데이터를 넣는다.
 - 이 때, 위의 seed 파일은 `app/fixtures/` 경로에 위치해야한다.
 
