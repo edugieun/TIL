@@ -1,4 +1,4 @@
-# Relationshop Fields
+# Relationship Fields
 
 - ForeignKey(참조 키, 외래 키)
   - 개념
