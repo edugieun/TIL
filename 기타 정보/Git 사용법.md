@@ -333,3 +333,26 @@ test -f ~/.bashrc && . ~/.bashrc
    - 그런 후 git checkout -b feature/coding 해서 브랜치 한 후 파일 수정 후
    - git push 하는데 이때 본인의 repo로 함. git push -u origin feature/coding
    - 그러면 branch repo에 알림이 뜨고, 그 후에 master의 pull request에도 알림이 뜸
+
+## 파일 되돌기리 / Commit 되돌리기
+
+- 상황 1. 협업 중 git pull 시 conflict를 해결하던 중, 이전 내용과 수정한 내용을 혼동하여 잘못 merge한 경우
+
+```bash
+# 아래처럼 아직 'MERGING'인 상태라면
+$ GiEun@DESKTOP-AE2CBRA MINGW64 ~/Desktop/test (new|MERGING)
+# 그냥 git merge --abort 해주면 모든 파일이 머지 전으로 돌아간다.
+$ git merge --abort
+```
+
+- 상황 2. 이미 모든 conflict을 처리하고 git add / commit 까지 했는데, 그때서야 잘못 merge 한 것을 깨달은 경우
+  - 이런 경우는 commit 기록이 있으니 원하는 commit으로 이동하면 된다.
+  - 우선 `git log`로 돌아가고자 하는 commit 번호를 알아낸다.
+  - 그 후 `reset`을 해줄건데, 두 종류의 reset 방법이 있다.
+    - 단, reset을 통해 해당 커밋으로 되돌아 간다는 뜻은, 해당 커밋 이후의 커밋들은 버린다는 뜻이므로 돌아가고자 하는 커밋 이후에 필요한 내용을 작성했다면 따로 보관한다.
+  - 방법 1. git reset [커밋 번호]
+    - 해당 커밋으로 돌아가긴 하나, 해당 커밋의 파일 내용이 아니라 돌아오기 전 파일 내용이 들어있으며, `git state`를 찍으면 어떤 파일이 해당 커밋의 파일과 다른지 확인할 수 있다.
+    - 해당 커밋의 파일 내용과 다른 파일을 해당 커밋의 파일 내용으로 되돌리고 싶다면, `git checkout -- [파일명] `을 해준다.
+  - 방법 2. git reset --hard [커밋 번호]
+    - 해당 커밋으로 돌아오는 동시에 파일 내용도 되돌린다.
+
