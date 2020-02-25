@@ -1,5 +1,9 @@
 # Today I Learned
 
-- 그때그때  공부한 내용을 두서없이 기록해둡니다.
-- 프로젝트를 진행하면서 기억할만한 내용들은 두서없이 기록해둡니다.
-- 저에 대해 좀 더 알고 싶으시다면 아래의 블로그를 방문해 주세요.
+[![docsify](https://img.shields.io/badge/-docsify-green)](https://docsify.js.org/)
+
+[TIL 사이트 바로가기](https://edugieun.github.io/TIL)
+
+- 기존의 사이트 없이 기록되던 TIL 리포지토리는 필요한 markdown 파일을 찾아보는데 불편함이 있었습니다.
+- 따라서, 제 자신이 기록하고 공부했던 내용들을 빠르게 찾아볼 수 있게 문서와 사이트(documentation site)인 `docsify.js`와 `github page`를 이용하여 `markdown` 파일들을 **두서없이** 모아놨습니다.
+
