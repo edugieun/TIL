@@ -35,3 +35,5 @@
   - [Vue_tip](/5_Vue/9_Vue_tip)
 - [Git](/6_Git/1_Intro)
   - [Workflow](/6_Git/2_Workflow)
+- [미분류](/99_미분류/1_Intro.md)
+  - [Redis_Cache](/99_미분류/Redis_Cache.md)
