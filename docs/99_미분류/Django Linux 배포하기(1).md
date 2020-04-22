@@ -1,6 +1,6 @@
 
 
-# Django + Vue AWS 서버 배포하기(WSGI, AWS)
+# Django + Vue AWS 서버 배포하기(1)(WSGI, AWS)
 
 ## Runserver 테스트
 
