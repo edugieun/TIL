@@ -6,18 +6,6 @@
 
 먼저 기존의 Window에서 작업한 프로젝트가 AWS 서버에서도 잘 동작하는지 확인해야 한다.
 
-나의 경우 DB관련 에러가 났다. Django 프로젝트와 MySQL을 연동하기 위한 mysqlclient를 설치할 때 발생하는 오류이다.
-
-![image](https://user-images.githubusercontent.com/52814897/79877872-bd230000-8427-11ea-84f8-53e9a12a9b3e.png)
-
-mysqlclient를 설치하기 위해서는 추가 패키지 설치가 필요하다.
-
-```bash
-$ apt-get install libmysqlclient-dev -y
-```
-
-패키지 설치 후 다시 mysqlclient를 설치해준다.
-
 #### ![image](https://user-images.githubusercontent.com/52814897/79878022-e5aafa00-8427-11ea-9e80-80e9c9acb523.png)
 
 우분투에서도 프로젝트가 정상 작동하는 것을 확인했다.

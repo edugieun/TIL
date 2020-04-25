@@ -57,3 +57,67 @@ $ sudo systemctl enabel gunicorn
 $ systemctl status gunicorn.service
 ```
 
+![image](https://user-images.githubusercontent.com/52814897/80273114-82acb200-870a-11ea-904b-e1f84fc9df43.png)
+
+초록불로 `active (running)`이 뜨면 gunicorn이 로컬로 잘 돌아가고 있는 것이다.
+
+### Ngixn Reverse Proxy 설정
+
+**Reverse Proxy**는 외부에서 내부 서버 접근 시, Proxy server를 통해 요청에 맞는 정보를 매핑시켜 주는 방식이다. Nginx에서는 이러한 Reverse Proxy를 위해 `proxy_pass`라는 환경 변수를 제공한다.
+
+지난 글에서 nginx 설정 파일에서 `location / {...}` 블록이 있었는데, 이는 루트(/), 즉 기본 IP주소로 요청이 들어왔을 때의 응답에 대한 로직이었다.
+
+그렇다면, 아래와 같은 location 블록은 무엇을 의미할까?
+
+```
+location /[아무거나]/ {
+	...
+}
+```
+
+위의 코드는 `http://[IP주소]/[아무거나]/`로 요청이 들어왔을 때의 어떤 처리를 할 지에 대한 부분이다.
+
+아래의 코드는?
+
+```
+location /[아무거나]/ {
+	proxy_pass http://127.0.0.1:8085/[아무거나]/;
+}
+```
+
+`http://[IP주소]/[아무거나]/`로 요청이 들어오면, linux 서버의 8085포트를 가지는 서버에 매핑시켜준다는 의미이고, 8085포트는 위에서 Gunicorn을 이용해 Django backend 서버가 배포된 포트 번호이다.
+
+따라서, 나의 경우 전체적인 nginx의 설정 파일은 다음과 같아진다.
+
+```
+# vue-project
+server {
+    listen      80;
+    server_name [public ip];
+    
+    charset utf-8;
+    
+    root    [build 폴더 경로];
+    index   index.html index.htm;
+
+    location / {
+      try_files $uri $uri/ =404; 
+		}
+    location /recipes/ {
+		proxy_pass http://127.0.0.1:8085/recipes/;
+	}
+}
+```
+
+즉, 아래처럼 vue 프로젝트에서 `/recipes/`로 시작하는 요청 주소를 `http://127.0.0.1:8085/recipes/~~~` 주소로 바꿔버린다는 뜻이다.
+
+```javascript
+axios.get('http://[public ip]/recipes/~~~')
+```
+
+이렇게 하면 axios 요청시 포트번호를 기입할 필요없이 그냥 public ip또는 도메인만 적으면 되므로
+
+![image](https://user-images.githubusercontent.com/52814897/80273858-f18d0980-8710-11ea-85af-8f7cdb6c3b70.png)
+
+위 사진처럼 개발자 도구에서 찍어봐도 실제 내부 서버의 포트번호 또한 공개되지 않는다.
+

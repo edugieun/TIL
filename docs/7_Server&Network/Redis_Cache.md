@@ -1,4 +1,4 @@
-# Redis Cache 사용하기
+# Redis Cache 사용하기(Docker, JMeter)
 
 ## 개요
 
