@@ -74,3 +74,20 @@ $ pip3 install opencv-python
 우분투에서 추가적으로 설치한 패키지가 윈도우에서는 필요하지도 않고, 존재하지도 않는 패키지일 수가 있다.
 
 OS 자체가 다르기 때문에 윈도우와 리눅스에서 사용되는 Django의 가상환경을 완벽하게 일치시킬 순 없다. 기본적인 필수 패키지 외에는 리눅스와 windows의 가상환경을 다르게 적용해야할 것 같다.
+
+## (추가)
+
+## Error Code 413
+
+![image](https://user-images.githubusercontent.com/52814897/80309763-e40b7880-8811-11ea-8b10-e354d3ef2722.png)
+
+Nginx를 통해 배포된 Frontend단에서 Client가 Image 파일을 업로드 할 때 발생하며, 파일의 용량이 초과하여 발생하는 에러이다.
+
+이상한 점이 있다면 비슷한 용량의 이미지 파일을 Web Brower에서 업로드 했을 경우는 413에러가 발생하지 않았는데, 핸드폰에서 Chrome을 통한 이미지 업로드 시에 위와 같은 에러가 발생했다.
+
+해결 방법은 Nginx에 아래와 같이 `client_max_body_size`에 대한 설정을 해주면 된다.
+
+![image](https://user-images.githubusercontent.com/52814897/80309923-e91cf780-8812-11ea-8d2e-388acd984bf7.png)
+
+
+
