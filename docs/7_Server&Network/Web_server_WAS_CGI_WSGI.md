@@ -1,4 +1,4 @@
-# Web Server, WAS, CGI, WSGI 이해하기
+# Web Server, WAS, WSGI 이해하기
 
 프로젝트를 진행하면서 내가 개발하는 프로젝트의 전반적인 구성에 대한 이해가 필요하다고 느꼈다.
 
@@ -36,22 +36,48 @@ Frontend 개발자로 첫 프로젝트를 했을 때는 그저 Backend를 담당
 
 > 웹 서버(Web Server)는 HTTP를 통해 웹 브라우저에서 요청하는 HTML 문서나 오브젝트(이미지 파일 등)을 전송해주는 서비스 프로그램을 말한다. - Wikipedia
 
-웹 서버는 클라이언트(웹 브라우저)와 직접적인 통신을 하는 프로그램이다. 주로 그림, CSS, Javascript, HTML 문서 등 **정적 콘텐츠**를 클라이언트에게 제공해준다. 물론 동시에 클라이언트로부터 콘텐츠를 전달 받는 역할도 한다. 
+웹 서버는 클라이언트(웹 브라우저)와 직접적인 통신을 하는 프로그램이다. 주로 그림, CSS, Javascript, HTML 문서 등 **정적 콘텐츠**를 클라이언트에게 제공해준다. 물론 동시에 클라이언트로부터 콘텐츠를 전달 받는 역할도 한다.
+
+자원을 효율적으로 사용하고, WAS로의 부하를 줄이기 위해 사용된다고도 하며 그 외에도 Virtual Hosting, 대용량 파일 지원, Bandwidth Throttling, Server-side scripting 등의 기능을 수행한다.
 
 자주 사용하는 Web Server Program은 아파치, IIS, Nginx, GWS 등이 있다.
 
-### 웹 서버 왜 쓸까?
-
-## JSP?
-
-### ASP?
-
-## Proxy Server
-
-Web Server와 같은거야? 
-
 ## WAS(Web Application Server)
 
-왜 동적 콘텐츠 수행에 최적화 되어 있어?
+> 웹 애플리케이션 서버(Web Application Server, WAS)는 웹 애플리케이션과 서버 환경을 만들어 동작시키는 기능을 제공하는 소프트웨어 프레임워크이다. - Wikipedia
 
-## Web Container
+> An application server runs behind a web Server(e.g. Apache or Microsoft Internet Information Services (IIS)) and (almost always) in front of an SQL database (e.g. PostgreSQL, MySQL, or Oracle). - wikipedia
+
+영어권에서는 Application Server라고도 부른다. 주로 웹 서버가 할 수 없는 로직처리나 DB 조회 등 **동적 콘텐츠**를 제공하는 역할을 한다.
+
+자바 기반의 아파치 톰캣처럼 웹 어플리케이션을 서비스할 수 있는 환경이나 서버 자체를 만들어 준다.
+
+파이썬으로 따지면 uWSGI나 Gunicorn 처럼 Django, Flask가 구동될 수 있는 환경을 만들어 준다.
+
+서버 또는 환경 그 자체를 말하기도 하며, 영문 Wikipedia의 정의처럼 Web Server와 WAS를 별개의 서버 구성으로 보기도 하고, Web Server를 포함한 개념으로도 사용된다.
+
+## WSGI
+
+> 웹 서버 게이트웨이 인터페이스(WSGI, Web Server Gateway Interface)는 웹 서버와 웹 애플리케이션의 인터페이스를 위한 파이썬 프레임워크다. - Wikipedia
+
+WSGI는 웹 서버와 통신하기 위한 일종의 통신 규약이며 주로 파이썬으로 구성된 Web application과 웹 서버의 통신을 위해 사용된다.
+
+### WSGI Server
+
+uWSGI나 Gunicorn과 같이 WSGI 규약을 사용하여 구성된 서버나 환경으로 WAS와 같거나 비슷한 개념으로 봐도 무방할 것 같다.
+
+Flask 공식 홈페이지에서는 다음과 같이 설명한다.
+
+> uWSGI is both a protocol and an application server. - Flask Web Site
+
+즉, uWSGI나 Gunicorn으로 생성된 서버가 통신 규약인 동시에 WAS라고 말하고 있다.
+
+Web Server, WAS, WSGI Server의 관계를 시스템 아키텍처로 그려보자면 아래 두 개 정도의 느낌이라 생각된다.
+
+물론 정확하진 않다..
+
+![image](https://user-images.githubusercontent.com/52814897/80385514-19cb6280-88e1-11ea-9b08-e3fd6cb1585b.png)
+
+![image](https://user-images.githubusercontent.com/52814897/80385452-091aec80-88e1-11ea-8a31-a59da44d65d7.png)
+
+현업에 대한 경험이 없어서 그런지, 시스템 아키텍처도 그렇고 WAS도 그렇고 뭔가 수학 공식처럼 딱 맞아떨어지는 듯한 정의가 아닌 개념에 대한 설명 같은 느낌이라 이해하기가 어려운 것 같다.
