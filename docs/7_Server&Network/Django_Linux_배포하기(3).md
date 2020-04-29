@@ -89,5 +89,16 @@ Nginx를 통해 배포된 Frontend단에서 Client가 Image 파일을 업로드 
 
 ![image](https://user-images.githubusercontent.com/52814897/80309923-e91cf780-8812-11ea-8d2e-388acd984bf7.png)
 
+## TkAgg 에러
 
+윈도우에서는 발생하지 않던 에러가 AWS Linux 서버에서 발생했다.
 
+`ImportError: Cannot load backend 'TkAgg' which requires the 'tk' interactive framework, as 'headless' is currently running`
+
+`tkagg`는 matplolib에 관련된 라이브러리로 우리가 윈도우에서 Visual Studio Code로 그래프 등을 띄울 때 사용된다고 한다.
+
+AWS Linux 서버에서는 Visual Studio Code를 사용하지 않고, 그래프를 띄울 일도 없기 떄문에 `tkagg`를 사용하는 부분을 찾아 주석 처리 해준다.
+
+```python
+# matplotlib.use('tkagg')
+```
