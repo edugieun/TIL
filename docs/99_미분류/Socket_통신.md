@@ -27,4 +27,3 @@
 https://www.slideshare.net/deview/django-websocket
 
 https://channels.readthedocs.io/en/latest/
-
