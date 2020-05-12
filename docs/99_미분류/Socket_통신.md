@@ -76,3 +76,22 @@ https://www.slideshare.net/deview/django-websocket
 
 https://channels.readthedocs.io/en/latest/
 
+### Web browser가 바로 Socket 통신을 할 수 있나?
+
+- Web browser(client)에서 서버와 바로 소켓 통신을 하는 것은 보안상 큰 위험이 있기 때문에 허용되지 않는다.
+  - 하지만 Websockify처럼 직접적으로 browser와 소켓 간의 연결을 가능하게 해주는 방법은 있다고 한다.
+- WebSocket은 raw socket 통신처럼 보이게 만들어주는 것일 뿐, 실제 socket 통신은 아니다.
+- 때문에, websocket에는 socket 통신과 달리 정상적인 TCP 연결을 하기 위해 Web Server를 거쳐야 하고, 이 과정에서 HTTP 통신처럼 Handshake 과정이나 CORS 관련 헤더를 추가하는 과정 등이 필요하다.
+  - Handshake : 두 채널 간의 정보 전달을 위해 사전에 필요한 변수를 설정하는 과정
+- 또한 WebSocket은 메세지를 전송하는 방식이고, socket 통신은 streaming 기반이다.
+- Socket과 다름에도 WebSocket이라 불리는 이유는 WebSocket은 TCP socket을 기반으로 데이터를 전송하기 때문이다..?
+- Websocket의 목적은 http 통신을 통해 TCP socket 통신을 하도록 문을 열어주는 역할?
+- WebSocket과 HTTP 사이의 유일한 관계는 Upgrade HTTP request에서의 handshake 뿐이다. Handshake 후에 소켓 통신을 가능하게 해준다.
+
+
+
+- WebSocket과 regular Socket은 같지 않다.
+- Websocket은 regular socket에서 운용되긴 하나, websocket만의 통신 및 연결 스키마를 가지고 있다.
+- 보안 스키마와 Frame 전달을 위한 새로운 프로토콜이 regular socket 위에서 진행되며, 양 끝단은 이 추가된 스키마 및 새로운 프로토콜을 적용해야하며, 이러한 새로운 기술들을 표준화 시킨 프로토콜이 바로 WebSocket이다.
+- 프로토콜 이름에 socket이라는 단어가 들어가 기존 socket처럼 프로그램적인 공간 및 구조라고 생각할 수 있으나, 사실은 HTTP, HTTPS, FTP처럼 하나의 통신 규약으로 이해하는 것이 맞다.
+
